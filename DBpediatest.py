@@ -31,11 +31,17 @@ for s in g.subject_objects(URIRef("http://dbpedia.org/ontology/hometown")):
         loc_g = rdflib.Graph()
         location = loc_g.parse(s[1])
         for t in loc_g.subject_objects(URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")):
-            print(t[1])
+            latitude = float(t[1])
         for t in loc_g.subject_objects(URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#long")):
-            print(t[1])
+            longitude =	float(t[1])
         for t in loc_g.subject_objects(URIRef("http://www.w3.org/2000/01/rdf-schema#label")):
-            print(t[1])
+            hometown = str(t[1])
+
+print latitude
+print longitude
+print hometown
+
+
 
 
 
