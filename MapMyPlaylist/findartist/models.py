@@ -3,6 +3,7 @@ import re
 import textwrap
 
 class Artist(models.Model):
+    dbpediaURI = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=200)
     bio = models.TextField(max_length=200)
 
@@ -17,6 +18,7 @@ class Artist(models.Model):
 
 
 class Location(models.Model):
+    dbpediaURI = models.CharField(max_length=200, unique=True)
     placename = models.CharField(max_length=200, unique=True)
     latitude = models.CharField(max_length=200)
     longitude = models.CharField(max_length=200)
