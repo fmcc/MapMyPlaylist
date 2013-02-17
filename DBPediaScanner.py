@@ -1,91 +1,112 @@
 import rdflib
 import re
 
-OBJECT_INDEX = 1;
-DBONTO = rdflib.Namespace('http://dbpedia.org/ontology/')
-ONTOLOGIES = (DBONTO.hometown, DBONTO.birthPlace)
+class DBPediaScanner:
+	""" Uses the rdflib wrapper to search DBPedia for an artist's
+	location and geoinformation. Returns this information in appropriate
+	formats using the methods below.
 
-def artistLocationInfo(artist, ontology):
-	artistURI = "http://dbpedia.org/resource/" + re.sub('\s+', '_', artist)
-	artistGraph = rdflib.Graph()
-	artistGraph.parse(artistURI)
-	artistGraph = checkDisambiguates(artistURI, artistGraph)
-	lat = list()
-	lon = list()
-	locationGraph = rdflib.Graph()
+	"""
+	DBONTO = rdflib.Namespace('http://dbpedia.org/ontology/') # Ontology rdflib Namespace
+	ONTOLOGIES = (DBONTO.hometown, DBONTO.birthPlace) # Ontologies constant to check for location info
 
-	# TODO: Sort out hometown vs birthPlace vs origin etc also property vs ontology
-	for statement in artistGraph.subject_objects(ontology):
-		locationGraph.parse(statement[OBJECT_INDEX])
-		hometown = locationGraph.preferredLabel(statement[OBJECT_INDEX], lang=u'en')[0][1]
-		if len(hometown) > 0:
-			break
+	labelPredicate = rdflib.term.URIRef(u'http://www.w3.org/2000/01/rdf-schema#label')
+	latPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")
+	longPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#long")
+	locationGraph = rdflib.Graph() # Graph to parse location object to
 
-	if len(locationGraph) is 0:
-		return False
+	def __init__(self, artist):
+		""" Initialiser for the DBPediaScanner class. Takes the artist's
+		name as a string.
 
-	for statement in locationGraph.subject_objects(rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")):
-		lat.append(float(statement[OBJECT_INDEX]))
-	for statement in locationGraph.subject_objects(rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#long")):
-		lon.append(float(statement[OBJECT_INDEX]))
+		"""
+		self.artistURI = rdflib.URIRef("http://dbpedia.org/resource/" + re.sub('\s+', '_', artist))
+		print "Artist URI is:", self.artistURI
+		self.artistGraph = rdflib.Graph()
+		self.artistGraph.parse(self.artistURI)
+		self.__checkDisambiguates()
+		for ontology in self.ONTOLOGIES:
+			try: # Checks to see if any objects of type ontology are found
+				self.locationURI = self.artistGraph.objects(self.artistURI, ontology).next()
+				print "Ontology of type", ontology, "found!"
+				return
+			except (StopIteration): # If none of this type found.
+				print "No ontology of type", ontology, "found!"
+		print "No locational info!"
 
-	if len(lat) > 1:
-		latitude = (lat[0] + lat[1]) / 2
-	elif len(lat) == 0:
-		print "No geodata!"
-		return False
-	else:
-		latitude = lat[0]
 
-	if len(lon) > 1:
-		longitude = (lon[0] + lon[1]) / 2 # Round this?
-	elif len(lon) == 0:
-		print "No geodata!"
-		return False
-	else:
-		longitude = lon[0]	
+	def artistLocationURI(self):
+		""" Returns the artist's location URI as a string
 
-	locationInfo = {'town': str(hometown), 'latitude': latitude, 'longitude': longitude}
+		"""
+		try:
+			return str(self.locationURI)
+		except AttributeError: # If locationURI hasn't been defined
+			print "LocationURI not defined!"
+			return None
 
-	print "Hometown is ", locationInfo['town']
-	print "Latitude is ", locationInfo['latitude']
-	print "Longitude is ", locationInfo['longitude']
+	def artistLocationLabel(self):
+		""" Returns the artists location label in English as
+		a string
 
-	return True
+		"""
+		try:
+			self.locationGraph.parse(self.locationURI)
+		except AttributeError: # If locationURI hasn't been defined
+			print "LocationURI not defined!"
+			return None
+		try:
+			hometown = self.locationGraph.preferredLabel(self.locationURI, lang=u'en')[0][1]
+			print "English label found!"
+			print "Hometown is", hometown
+			return str(hometown)
+		except IndexError: # If no labels in English are found
+			print "No English label found!"
+			try:
+				hometown = self.locationGraph.objects(self.locationURI, self.labelPredicate).next()
+				return str(hometown)
+			except StopIteration: # If generator is empty
+				print "Empty locationGraph!" 
 
-def checkDisambiguates(artistURI, graph):
-	newGraph = rdflib.Graph()
-	for stmt in graph.objects(rdflib.URIRef(artistURI), DBONTO.wikiPageDisambiguates):
-		disamb = str(stmt)
-		if '(band)' in disamb:
-			newGraph.parse(stmt)
-			print "Disambiguated to :", disamb
-			break
-		elif '(singer)' in disamb:
-			newGraph.parse(stmt)
-			print "Disambiguated to :", disamb
-			break
-		elif '(group)' in disamb:
-			newGraph.parse(stmt)
-			print "Disambiguated to :", disamb
-			break
-		elif '(musician)' in disamb:
-			newGraph.parse(stmt)
-			print "Disambiguated to :", disamb
-			break
+	def artistLocationGeo(self):
+		""" Returns artists hometown latitude and longitude as
+		floats.
 
-	if len(newGraph) > 0:
-		return newGraph
-	else:
-		return graph
+		"""
+		try:
+			lat = float(self.locationGraph.objects(self.locationURI, self.latPredicate).next())
+			lon = float(self.locationGraph.objects(self.locationURI, self.longPredicate).next())
+			print "Latitude is", lat
+			print "Longitude is", lon
+			return lat, lon
+		except StopIteration: # If generator is empty
+			print "No geodata!"
+		except AttributeError: # If locationURI hasn't been defined
+			print "LocationURI not defined!"
 
-artist = raw_input('Enter the artist name:').strip()
+	def __checkDisambiguates(self):
+		for stmt in self.artistGraph.objects(rdflib.URIRef(self.artistURI), self.DBONTO.wikiPageDisambiguates):
+			disamb = str(stmt)
+			if '(band)' in disamb:
+				self.__updateGraph(stmt)
+				print "Disambiguated to :", disamb
+				break
+			elif '(singer)' in disamb:
+				self.__updateGraph(stmt)
+				print "Disambiguated to :", disamb
+				break
+			elif '(group)' in disamb:
+				self.__updateGraph(stmt)
+				print "Disambiguated to :", disamb
+				break
+			elif '(musician)' in disamb:
+				self.__updateGraph(stmt)
+				print "Disambiguated to :", disamb
+				break
 
-for ontology in ONTOLOGIES:
-	if artistLocationInfo(artist, ontology):
-		break
-
-print "Finished!"
+	def __updateGraph(self, newURI):
+		self.artistURI = newURI
+		self.artistGraph.parse(newURI)
 
 
 
