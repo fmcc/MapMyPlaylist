@@ -13,7 +13,7 @@ password_hash = pylast.md5(getpass.getpass("What's your password (for API authen
 network = pylast.LastFMNetwork(api_key = API_KEY, api_secret = API_SECRET, username = username, password_hash = password_hash)
 
 artist = network.get_artist(raw_input("Username to Query?\n"))
-nohtml = re.sub("<.*?>", "", artist.get_bio_summary())
+nohtml = re.sub("<.*?>", "", artist.get_bio_content())
 
 bio = textwrap.fill(nohtml, 80)
 print(bio)

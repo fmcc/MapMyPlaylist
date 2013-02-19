@@ -3,7 +3,6 @@ import re
 import textwrap
 
 class Artist(models.Model):
-    dbpediaURI = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=200)
     bio = models.TextField(max_length=200)
 
