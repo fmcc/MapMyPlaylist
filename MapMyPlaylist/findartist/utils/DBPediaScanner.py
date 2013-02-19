@@ -1,5 +1,6 @@
 import rdflib
 import re
+from guess_language import *
 
 class DBPediaScanner:
 	""" Uses the rdflib wrapper to search DBPedia for an artist's
@@ -13,6 +14,7 @@ class DBPediaScanner:
 	labelPredicate = rdflib.term.URIRef(u'http://www.w3.org/2000/01/rdf-schema#label')
 	latPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")
 	longPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#long")
+        commentPredicate = rdflib.URIRef("http://www.w3.org/2000/01/rdf-schema#comment")
 	locationGraph = rdflib.Graph() # Graph to parse location object  
 
 	def __init__(self, artist):
@@ -33,6 +35,21 @@ class DBPediaScanner:
 			except (StopIteration): # If none of this type found.
 				print "No ontology of type", ontology, "found!"
 		print "No locational info!"
+
+        def artistComment(self):
+		""" Returns a short comment/bio of the artist.  
+
+		"""
+		try:
+		    comments = self.artistGraph.objects(self.artistURI, self.commentPredicate)
+                    for com in comments:
+                        if guessLanguage(com) == 'en':
+                            return com
+                    return "There is no biographical information for this band."
+		except StopIteration: # If generator is empty
+                    return "There is no biographical information for this band."
+		except AttributeError: # If locationURI hasn't been defined
+			print "ArtistURI not defined!"
 
 
 	def artistLocationURI(self):

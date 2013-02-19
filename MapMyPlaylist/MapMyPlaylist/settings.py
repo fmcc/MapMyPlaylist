@@ -103,6 +103,7 @@ ROOT_URLCONF = 'MapMyPlaylist.urls'
 WSGI_APPLICATION = 'MapMyPlaylist.wsgi.application'
 
 TEMPLATE_DIRS = (
+        "/home/finlay/Code/MapMyPlaylist/MapMyPlaylist/templates"
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
