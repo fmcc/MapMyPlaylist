@@ -1,5 +1,4 @@
 import pylast
-import musicbrainzngs
 from findartist.models import Artist, Location
 from findartist.utils.DBPediaScanner import DBPediaScanner
 
