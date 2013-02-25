@@ -64,6 +64,7 @@ class DBPediaScanner:
 			print "No English label found!"
 			try:
 				hometown = self.locationGraph.objects(self.locationURI, self.labelPredicate).next()
+				print "Hometown is", hometown
 				return str(hometown)
 			except StopIteration: # If generator is empty
 				print "Empty locationGraph!" 

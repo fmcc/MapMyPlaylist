@@ -1,7 +1,11 @@
 #Django settings for MapMyPlaylist project.
+import os.path
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+#Sets up relative project path
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -103,7 +107,7 @@ ROOT_URLCONF = 'MapMyPlaylist.urls'
 WSGI_APPLICATION = 'MapMyPlaylist.wsgi.application'
 
 TEMPLATE_DIRS = (
-        "/home/finlay/Code/MapMyPlaylist/MapMyPlaylist/templates"
+        os.path.join(PROJECT_PATH, "templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
