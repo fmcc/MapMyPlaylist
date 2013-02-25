@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
      url(r'^admin/', include(admin.site.urls)),
 
-     url(r'^findartist/(?P<artistName>[\w ]+)/$', 'findartist.views.artistQuery'),
+     url(r'^findartist/(?P<artistName>.+)/$', 'findartist.views.artistQuery'),
+     url(r'^finduserplaylist/(?P<lastFMUsername>.+)/$', 'findartist.views.playlistQuery'),
 )
