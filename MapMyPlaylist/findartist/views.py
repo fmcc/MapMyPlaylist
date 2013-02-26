@@ -6,6 +6,9 @@ from django.http import  HttpResponse
 from django.utils.simplejson import dumps, loads, JSONEncoder
 from django.core import serializers
 
+"""
+Takes an artist name from a url and returns that artist as a json object .
+"""
 def artistQuery(request, artistName):
     a = artistGetOrCreate(artistName)
     artist = []
@@ -13,6 +16,11 @@ def artistQuery(request, artistName):
     json_artist = dumps(artist)
     return HttpResponse(json_artist, content_type="application/json")
 
+"""
+Takes in a username from a url and returns a list of unique artists from the last 10 (11?) artists listened to by that user on last.fm.
+The information on each artist is converted to a dictionary object and appended to a list. This list is then converted to a json format via the 
+simplejason.dumps method and this is returned via http. 
+"""
 def playlistQuery(request, lastFMUsername):
     user = LastFMPlaylist(lastFMUsername)
     artists = user.getPlaylist()
@@ -23,6 +31,9 @@ def playlistQuery(request, lastFMUsername):
     json_playlist = dumps(playlist)
     return HttpResponse(json_playlist, content_type="application/json") 
 
+"""
+Method to either retrieve an artist from the database, or use the CreateArtist Class to query last.fm and dbpedia and add the artist to our DB.
+"""
 def artistGetOrCreate(artistName):
     try:
         artist = Artist.objects.get(name=artistName)
