@@ -1,9 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
     </head>
     <body>
-        <p>It works</p> 
+     	<script type="text/javascript" src="static/jquery.js"></script>
+     	<script type="text/javascript">
+     		$( document ).ready(function() {
+     			$("button").click(function() {
+     				alert("Updating playlist")
+  					$.getJSON('/finduserplaylist/grammo106/', function(data) {
+              $.each(data, function(index, item) {
+                $.each(item, function(key, item) {
+                  $('#artists').append(key + " : " + item + " == ")
+                });
+              });
+  					})
+            .success(function() {alert(" success");})
+            .error(function() { alert("error");})
+  				});
+  			});
+		  </script>
+		  <button>Update playlist info</button>
+		  <div id="artists">
+      </div>
     </body>
 </html>
