@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MapMyPlaylist</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css" /><![endif]-->
+</head>
+<body>
+    <div id="header" class="navbar">
+            <div class="navbar-inner">
+                <h1 id="name" class="brand">MayMyPlaylist</h1>
+                <h1 id="login" class="right">logout</h1>
+                <h1 id="settings" class="right">settings</h1>
+                <h1 id="text" class="left">Search artist:<h1>
+ 		<form action="demo_form.asp">
+                      <input type="text" name="playlist" size="4" class="mapplaylist">
+                      <input type="submit" value="Map!" class="subbutton">
+                </form>
+            </div>
+        </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+                
+    <script src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
+    <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
+    <script src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
+    <script src="static/jquery.js"></script>
+                
+</body>
+</html>
