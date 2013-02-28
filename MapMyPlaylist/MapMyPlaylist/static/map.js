@@ -4,7 +4,7 @@
     //TO DO: make it depend on the locations of the markers
 		var lat            = 53.52;
 		var lon            = -1.00;
-		var zoom           = 7;
+		var zoom           = 2;
 	
 	//add map as baselayer	
 	var map = new L.Map('map');
@@ -47,7 +47,14 @@ $( document ).ready(function()
         {
           $.each(data, function() 
           { // displays artist names currently for display purposes
-            var location = new L.LatLng(this.lat, this.long);
+            var latitude = parseFloat(this.lat);
+            var longitude = parseFloat(this.long);
+            if(isNaN(latitude))
+            {
+                console.log(this.name + " map failed!")
+                return true;
+            }
+            var location = new L.LatLng(latitude, longitude);
             var name = this.name;
             var image = this.image;
             var marker = new L.Marker(location, { title: name });
