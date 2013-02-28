@@ -4,7 +4,7 @@
     <title>MapMyPlaylist</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
-    <link rel="stylesheet" type="text/css" href="bootstrap.css"> 
+    <link rel="stylesheet" type="text/css" href="static/bootstrap.css"> 
     <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css" /><![endif]-->
 </head>
 <body>
@@ -16,7 +16,7 @@
                 <h1 id="text" class="left">Search artist:<h1>
  		<form action="demo_form.asp"> 
                       <input type="text" value ="grammo106" name="artist" size="4" class="mapplaylist">
-                      <input type="submit" value="Map!" class="subbutton">
+                      <!--<input type="submit" value="Map!" class="subbutton">-->
                 </form> 
             </div>
 	    <button id="startButton">Start AJAXing</button>
@@ -30,11 +30,6 @@
     <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/map.js"></script>
-    <!--<script type="text/javascript" src="static/displaymarkers.js"></script> -->
-    <!--<script type="text/javascript">
-	// when the document is ready, call function displaymarkers
-     //		$( document ).ready(function()
-   // </script> -->
-                
+    <script type="text/javascript" src="static/getplaylist.js"></script>                
 </body>
 </html>
