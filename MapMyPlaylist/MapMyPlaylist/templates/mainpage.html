@@ -5,23 +5,48 @@
     <body>
      	<script type="text/javascript" src="static/jquery.js"></script>
      	<script type="text/javascript">
-            $( document ).ready(function() {
-                    function getplaylist() {
-                        $(function() {
-                            $.getJSON('/finduserplaylist/wildfreenoise/', function(data) {
-                                $.each(data, function() {
-                                    $("#artists").append(this.name + "</br>")
-                                    });
-                                });
-                            })
-                    }
-                    getplaylist();
-                    setInterval( getplaylist, 30000 );
-            })
-                                
-        </script>
+      // will move to seperate js file after discussion
+     		$( document ).ready(function() 
+        {
+          $('#startButton').click(function()
+          {
+            var username = $('input').val();
+            var latestArtist = "";
 
-    <div id="artists">
-    </div>
+     			  function getPlaylist()
+            {
+              // BUG: returns current tune at first but then removes
+  					 $.getJSON('/finduserplaylist/' + username + '/', function(data) 
+              {
+                var artists = "";
+                // checks to see if most recent artist has changed
+                if (data[0].name != latestArtist)
+                {
+                  $.each(data, function() 
+                  { // displays artist names currently for display purposes
+                    artists += this.name + "</br>";
+                  });
+                  $('#artists').html(artists);
+                  latestArtist = data[0].name;
+                }
+  					   })
+              // just for debug, remove if necessary
+              .success(function() {alert("Playlist Updated!")})
+              .error(function() 
+              { 
+                alert("Error, stopping refresh!");
+                clearInterval(playlistRefresh);
+              })
+            }
+  				  var playlistRefresh = setInterval(getPlaylist, 30000);
+  			 });
+      });
+		  </script>
+      <div>
+        Last.FM Username : <input type="text" value="grammo106"></input>
+      </div>
+		  <button id="startButton">Start AJAXing</button>
+		  <div id="artists">
+      </div>
     </body>
 </html>
