@@ -5,22 +5,47 @@
     <body>
      	<script type="text/javascript" src="static/jquery.js"></script>
      	<script type="text/javascript">
-     		$( document ).ready(function() {
-     			$("button").click(function() {
-     				alert("Updating playlist")
-  					$.getJSON('/finduserplaylist/grammo106/', function(data) {
-              $.each(data, function(index, item) {
-                $.each(item, function(key, item) {
-                  $('#artists').append(key + " : " + item + " == ")
-                });
-              });
-  					})
-            .success(function() {alert(" success");})
-            .error(function() { alert("error");})
-  				});
-  			});
+      // will move to seperate js file after discussion
+     		$( document ).ready(function() 
+        {
+          $('#startButton').click(function()
+          {
+            var username = $('input').val();
+            var latestArtist = "";
+
+     			  function getPlaylist()
+            {
+              // BUG: returns current tune at first but then removes
+  					 $.getJSON('/finduserplaylist/' + username + '/', function(data) 
+              {
+                var artists = "";
+                // checks to see if most recent artist has changed
+                if (data[0].name != latestArtist)
+                {
+                  $.each(data, function() 
+                  { // displays artist names currently for display purposes
+                    artists += this.name + "</br>";
+                  });
+                  $('#artists').html(artists);
+                  latestArtist = data[0].name;
+                }
+  					   })
+              // just for debug, remove if necessary
+              .success(function() {console.log("Playlist Updated!")})
+              .error(function() 
+              { 
+                console.log("Error, stopping refresh!");
+                clearInterval(playlistRefresh);
+              })
+            }
+  				  var playlistRefresh = setInterval(getPlaylist, 5000);
+  			 });
+      });
 		  </script>
-		  <button>Update playlist info</button>
+      <div>
+        Last.FM Username : <input type="text" value="grammo106"></input>
+      </div>
+		  <button id="startButton">Start AJAXing</button>
 		  <div id="artists">
       </div>
     </body>
