@@ -31,14 +31,14 @@
                 }
   					   })
               // just for debug, remove if necessary
-              .success(function() {alert("Playlist Updated!")})
+              .success(function() {console.log("Playlist Updated!")})
               .error(function() 
               { 
-                alert("Error, stopping refresh!");
+                console.log("Error, stopping refresh!");
                 clearInterval(playlistRefresh);
               })
             }
-  				  var playlistRefresh = setInterval(getPlaylist, 30000);
+  				  var playlistRefresh = setInterval(getPlaylist, 5000);
   			 });
       });
 		  </script>
