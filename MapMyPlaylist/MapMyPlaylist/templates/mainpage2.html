@@ -3,7 +3,8 @@
 <head>
     <title>MapMyPlaylist</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.css"> 
     <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css" /><![endif]-->
 </head>
 <body>
@@ -13,19 +14,27 @@
                 <h1 id="login" class="right">logout</h1>
                 <h1 id="settings" class="right">settings</h1>
                 <h1 id="text" class="left">Search artist:<h1>
- 		<form action="demo_form.asp">
-                      <input type="text" name="artist" size="4" class="mapplaylist">
+ 		<form action="demo_form.asp"> 
+                      <input type="text" value ="grammo106" name="artist" size="4" class="mapplaylist">
                       <input type="submit" value="Map!" class="subbutton">
-                </form>
+                </form> 
             </div>
-        </div>
+	    <button id="startButton">Start AJAXing</button>
+            <div id="artists"></div>	
+    </div>
+		  
     <div id="map" style="width: 100%; height: 100%"></div>
                 
-    <script src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
-    <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
-    <script src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
-    <script src="static/jquery.js"></script>
-    <script src="static/map.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/map.js"></script>
+    <!--<script type="text/javascript" src="static/displaymarkers.js"></script> -->
+    <!--<script type="text/javascript">
+	// when the document is ready, call function displaymarkers
+     //		$( document ).ready(function()
+   // </script> -->
                 
 </body>
 </html>

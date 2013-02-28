@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-    </head>
-    <body>
-     	<script type="text/javascript" src="static/jquery.js"></script>
-     	<script type="text/javascript">
-      // will move to seperate js file after discussion
-     		$( document ).ready(function() 
+ function displaymarkers() {
         {
           $('#startButton').click(function()
           {
@@ -38,15 +30,7 @@
                 clearInterval(playlistRefresh);
               })
             }
-  				  var playlistRefresh = setInterval(getPlaylist, 5);
+  				  var playlistRefresh = setInterval(getPlaylist, 5000);
   			 });
       });
-		  </script>
-      <div>
-        Last.FM Username : <input type="text" value="grammo106"></input>
-      </div>
-		  <button id="startButton">Start AJAXing</button>
-		  <div id="artists">
-      </div>
-    </body>
-</html>
+}
