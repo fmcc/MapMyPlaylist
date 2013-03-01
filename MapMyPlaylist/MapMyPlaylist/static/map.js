@@ -34,7 +34,7 @@
 	map.on('locationfound', onLocationFound);
 	map.on('locationerror', onLocationError);
 
-	map.locate({setView: true, maxZoom: 8});
+	map.locate({setView: true, maxZoom: 7});
 
 	$( document ).ready(function() 
 	{
@@ -78,25 +78,7 @@
 		    }
     		var playlistRefresh = setInterval(getPlaylist, 5000);
   		});
-	});
-
-
-    
-    var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.');
-    //    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
-    //    aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
-    //    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
-    //var cities = L.layerGroup([littleton, denver, aurora, golden]);
-    //Display coordinates on the map
-    map.addLayer(littleton);
-    // map.addLayer(cities);
-    
-    
-    
-    
-    
-    
-    
+	});  
     
     //Raphael and Leaflet working together....
     //useless really...
