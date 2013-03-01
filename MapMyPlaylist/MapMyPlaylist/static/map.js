@@ -4,7 +4,7 @@
 	{
 		console.log("Label should be " + label);
 		var location = new L.LatLng(lat, long);
-		var marker = new L.Marker(location, label);
+		var marker = new L.Marker(location, { title: label });
 		map.addLayer(marker);
 	}
 	//lat, lon and zoom of the map
