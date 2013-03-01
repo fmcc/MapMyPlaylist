@@ -1,80 +1,86 @@
-(function() {
-
+(function() 
+{
+	function setMarker(lat, long, label)
+	{
+		console.log("Label should be " + label);
+		var location = new L.LatLng(lat, long);
+		var marker = new L.Marker(location, label);
+		map.addLayer(marker);
+	}
 	//lat, lon and zoom of the map
     //TO DO: make it depend on the locations of the markers
-		var lat            = 53.52;
-		var lon            = -1.00;
-		var zoom           = 2;
+	var lat            = 53.52;
+	var lon            = -1.00;
+	var zoom           = 2;
 	
 	//add map as baselayer	
 	var map = new L.Map('map');
 	var basemap  = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-	map.setView(new L.LatLng(lat, lon), zoom);
+	//map.setView(new L.LatLng(lat, lon), zoom);
 	map.addLayer(basemap);
-     
-    //function getLocations() {
-    //Get JSON object using JQuery
-    /*  $.getJSON( 'finduserplaylist/grammo106', function(data) { 
-        for (var i = 0; i < data.length; i++ {
-             var location = new L.LatLng(data[i].lat, data[i].lng);
-             var name = data[i].name;
-             var image = data[i].image;
-	     //use the location and other info for a marker
-             var marker = new L.Marker(location, {
-              title: name
-            });
-            marker.bindPopup("<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ title + city +"</div>", {maxWidth: '400'});
-            //add the marker to the layer
-	    map.addLayer(marker);
-	    });
-    	}   
-    */
-$( document ).ready(function() 
-{
-  $('#startButton').click(function()
-  {
-    var username = $('input').val();
-    var latestArtist = "";
 
-    function getPlaylist()
-    {
-              // BUG: returns current tune at first but then removes
-     $.getJSON('/finduserplaylist/' + username + '/', function(data) 
-      {
-        var artists = "";
-                // checks to see if most recent artist has changed
-        if (data[0].name != latestArtist)
-        {
-          $.each(data, function() 
-          { // displays artist names currently for display purposes
-            var latitude = parseFloat(this.lat);
-            var longitude = parseFloat(this.long);
-            if(isNaN(latitude))
-            {
-                console.log(this.name + " map failed!")
-                return true;
-            }
-            var location = new L.LatLng(latitude, longitude);
-            var name = this.name;
-            var image = this.image;
-            var marker = new L.Marker(location, { title: name });
-            map.addLayer(marker);
-          });
-          $('#artists').html(artists);
-          latestArtist = data[0].name;
-        }
-        })
-      // just for debug, remove if necessary
-      .success(function() {console.log("Playlist Updated!")})
-      .error(function() 
-      { 
-        console.log("Error, stopping refresh!");
-        clearInterval(playlistRefresh);
-      })
-    }
-    var playlistRefresh = setInterval(getPlaylist, 5000);
-  });
-});
+	function onLocationFound(e) 
+	{
+		var radius = e.accuracy / 2;
+
+		L.marker(e.latlng).addTo(map)
+		.bindPopup("You are within " + radius + "meters from this point").openPopup();
+
+		L.circle(e.latlng, radius).addTo(map);
+	}
+
+	function onLocationError(e) {alert(e.message)}
+
+	map.on('locationfound', onLocationFound);
+	map.on('locationerror', onLocationError);
+
+	map.locate({setView: true, maxZoom: 8});
+
+	$( document ).ready(function() 
+	{
+		$('#startButton').click(function()
+		{
+    		var username = $('input').val();
+			var latestArtist = "";
+
+			function getPlaylist()
+		    {
+		         // BUG: returns current tune at first but then removes
+		     	$.getJSON('/finduserplaylist/' + username + '/', function(data) 
+		      	{
+		        	var artists = "";
+		                // checks to see if most recent artist has changed
+		        	if (data[0].name != latestArtist)
+		        	{
+		        		$.each(data, function() 
+		          		{ // displays artist names currently for display purposes
+		            		var latitude = parseFloat(this.lat);
+		            		var longitude = parseFloat(this.long);
+		            		if(isNaN(latitude))
+		            		{
+		                		console.log(this.name + " map failed!")
+		                		return true;
+		            		}
+		            		var image = this.image;
+		            		setMarker(latitude, longitude, this.name)
+		          		});
+		          		$('#artists').html(artists);
+		          		latestArtist = data[0].name;
+		        	}
+		 		})
+		      // just for debug, remove if necessary
+		      	.success(function() {console.log("Playlist Updated!")})
+		      	.error(function() 
+		      	{ 
+		        	console.log("Error, stopping refresh!");
+		        	clearInterval(playlistRefresh);
+		      	})
+		    }
+    		var playlistRefresh = setInterval(getPlaylist, 5000);
+  		});
+	});
+
+
     
     var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.');
     //    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
