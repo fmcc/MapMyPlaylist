@@ -1,10 +1,20 @@
 (function() 
 {
 	function setMarker(lat, long, label)
+	//function setMarker(lat, long, label, image, summary)
 	{
 		console.log("Label should be " + label);
+		//custom marker
+		//haven't tested this yet! seemed like LastFM's server was down for a while!		
+		// var musicIcon = L.icon({
+        	//	iconUrl:'static/musicicon.png',
+        	//	iconSize: [40,40]
+    		//});
 		var location = new L.LatLng(lat, long);
 		var marker = new L.Marker(location, { title: label });
+		//var marker = new L.Marker(location, { title: label }, {icon: musicIcon});
+		//this adds a html popup with an image and a summary 
+		//marker.bindPopup("<table><tr><td><img image height=100% width=100%></td><td>summary</td></tr></table>");
 		map.addLayer(marker);
 	}
 	
@@ -67,6 +77,7 @@
 		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude }
 		            		var image = this.image;
 		            		setMarker(latitude, longitude, this.name)
+					//setMarker(latitude, longitude, this.name, this.image, this.summary)
 		          		});
 		          		$('#artists').html(artists);
 		          		latestArtist = data[0].name;
