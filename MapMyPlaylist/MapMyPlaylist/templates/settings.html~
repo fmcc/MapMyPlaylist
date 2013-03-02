@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MapMyPlaylist</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css"
+        />
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"
+            />
+        <![endif]-->
+    </head>
+    
+    <body>
+    <div class="settingsbox">
+     
+        <button onclick="" class="back">Main menu</button>
+        <h1>Settings</h1>
+               
+        <hr>
+            
+        <div class="lastfmsettings">
+            <h4>Change link lastFM account</h2>
+            <label>Link LastFM account:</label>
+            <input type="text" name="playlist" size="4" class="mapplaylist"><br>
+            <button onclick="">Update changes</button>
+        </div>
+            
+        <hr>
+           
+           <h4>Change password</h2>
+            <div>
+            <label>Old password:</label>
+            <input type="password" name="password"><br>
+            </div>
+            
+            <div>
+                <label>New password:</label>
+                <input type="password" name="newpassword"><br>
+            </div>
+                    
+            <div>
+                <label>Confirm password:</label>
+                <input type="password" name="confirmpassword"><br>
+            </div>
+            <button onclick="">Update changes</button>
+            
+        <hr>
+            
+        <div class="mapappearance">
+            <h4>Change map appearance</h4>
+            <mapspace><img class="img" src="http://b.tile.stamen.com/toner/14/2627/6331.png" height="100" width="100"></mapspace>
+            <mapspace><img class="img" src="http://b.tile.stamen.com/watercolor/9/81/197.jpg" height="100" width="100"></mapspace><br>
+            <mapspace><input type="checkbox" name="map" value="toner">Toner</mapspace> 
+            <mapspace><input type="checkbox" name="map" value="watercolorr" class >Watercolour</mapspace>
+            <br><br> 
+            <button onclick="">Update changes</button>
+        </div>    
+                  
+                  
+                  
+                  
+       
+            
+            
+            
+            
+            
+            
+            
+            
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+    </div>    
+        <script src="jquery.js"></script>           
+</body>
+</html>
