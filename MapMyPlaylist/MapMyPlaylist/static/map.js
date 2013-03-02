@@ -19,11 +19,13 @@
 	//map.setView(new L.LatLng(lat, lon), zoom);
 	map.addLayer(basemap);
 
+	var userMarker = {};
+
 	function onLocationFound(e) 
 	{
 		var radius = e.accuracy / 2;
 
-		L.marker(e.latlng).addTo(map)
+		userMarker = L.marker(e.latlng).addTo(map)
 		.bindPopup("You are within " + radius + "meters from this point").openPopup();
 
 		L.circle(e.latlng, radius).addTo(map);
@@ -52,6 +54,8 @@
 		                // checks to see if most recent artist has changed
 		        	if (data[0].name != latestArtist)
 		        	{
+		        		var minLatLng = [90.0, 180.0];
+		        		var maxLatLng = [-90.0, -180.0];
 		        		$.each(data, function() 
 		          		{ // displays artist names currently for display purposes
 		            		var latitude = parseFloat(this.lat);
@@ -61,11 +65,19 @@
 		                		console.log(this.name + " map failed!")
 		                		return true;
 		            		}
+		            		if(latitude < minLatLng[0]) { minLatLng[0] = latitude}
+		            		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude}
+		            		if(longitude < minLatLng[1]) { minLatLng[1] = longitude}
+		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude}
 		            		var image = this.image;
 		            		setMarker(latitude, longitude, this.name)
 		          		});
 		          		$('#artists').html(artists);
 		          		latestArtist = data[0].name;
+		          		map.fitBounds([
+		          			minLatLng,
+		          			maxLatLng
+		          			]);
 		        	}
 		 		})
 		      // just for debug, remove if necessary
