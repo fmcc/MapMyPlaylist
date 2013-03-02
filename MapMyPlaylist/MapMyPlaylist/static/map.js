@@ -7,16 +7,10 @@
 		var marker = new L.Marker(location, { title: label });
 		map.addLayer(marker);
 	}
-	//lat, lon and zoom of the map
-    //TO DO: make it depend on the locations of the markers
-	var lat            = 53.52;
-	var lon            = -1.00;
-	var zoom           = 2;
 	
 	//add map as baselayer	
 	var map = new L.Map('map');
 	var basemap  = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-	//map.setView(new L.LatLng(lat, lon), zoom);
 	map.addLayer(basemap);
 
 	var userMarker = {};
@@ -54,8 +48,10 @@
 		                // checks to see if most recent artist has changed
 		        	if (data[0].name != latestArtist)
 		        	{
-		        		var minLatLng = [90.0, 180.0];
-		        		var maxLatLng = [-90.0, -180.0];
+		        		var userLat = userMarker.getLatLng().lat;
+		        		var userLong = userMarker.getLatLng().lng;
+		        		var minLatLng = [userLat, userLong];
+		        		var maxLatLng = [userLat, userLong];
 		        		$.each(data, function() 
 		          		{ // displays artist names currently for display purposes
 		            		var latitude = parseFloat(this.lat);
@@ -65,15 +61,18 @@
 		                		console.log(this.name + " map failed!")
 		                		return true;
 		            		}
-		            		if(latitude < minLatLng[0]) { minLatLng[0] = latitude}
-		            		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude}
-		            		if(longitude < minLatLng[1]) { minLatLng[1] = longitude}
-		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude}
+		            		if(latitude < minLatLng[0]) { minLatLng[0] = latitude }
+		            		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude }
+		            		if(longitude < minLatLng[1]) { minLatLng[1] = longitude }
+		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude }
 		            		var image = this.image;
 		            		setMarker(latitude, longitude, this.name)
 		          		});
 		          		$('#artists').html(artists);
 		          		latestArtist = data[0].name;
+		          		if(userLong < minLatLng[1]) { minLatLng[1] = userLong }
+		            	if(userLong > maxLatLng[1]) { maxLatLng[1] = userLong }
+		            	//alert("userLong is " + userLong);
 		          		map.fitBounds([
 		          			minLatLng,
 		          			maxLatLng
