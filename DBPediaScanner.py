@@ -8,23 +8,29 @@ class DBPediaScanner:
 
 	"""
 	DBONTO = rdflib.Namespace('http://dbpedia.org/ontology/') # Ontology rdflib Namespace
-	ONTOLOGIES = (DBONTO.hometown, DBONTO.birthPlace) # Ontologies constant to check for location info
+	ONTOLOGIES = [DBONTO.hometown, DBONTO.birthPlace] # Ontologies constant to check for location info
+	MUSIC_ONTOLOGIES = [DBONTO.Band, DBONTO.Artist, DBONTO.MusicGroup, DBONTO.MusicalArtist]
 
 	labelPredicate = rdflib.term.URIRef(u'http://www.w3.org/2000/01/rdf-schema#label')
 	latPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")
 	longPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#long")
+	typePredicate = rdflib.URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 	locationGraph = rdflib.Graph() # Graph to parse location object to
 
 	def __init__(self, artist):
 		""" Initialiser for the DBPediaScanner class. Takes the artist's
-		name as a string.
-
+			name as a string.
 		"""
 		self.artistURI = rdflib.URIRef("http://dbpedia.org/resource/" + re.sub('\s+', '_', artist))
 		print "Artist URI is:", self.artistURI
 		self.artistGraph = rdflib.Graph()
 		self.artistGraph.parse(self.artistURI)
+
+		if (self.__isArtistType() == False):
+			self.__changeToDisambiguation()
+
 		self.__checkDisambiguates()
+
 		for ontology in self.ONTOLOGIES:
 			try: # Checks to see if any objects of type ontology are found
 				self.locationURI = self.artistGraph.objects(self.artistURI, ontology).next()
@@ -34,10 +40,20 @@ class DBPediaScanner:
 				print "No ontology of type", ontology, "found!"
 		print "No locational info!"
 
+	def __isArtistType(self):
+		""" Returns whether the artistGraph is for an
+			artist (True) or something else (False)
+			e.g, try "Prince"
+		"""
+		for obj in self.artistGraph.objects(self.artistURI, self.typePredicate):
+			print "Checking types..."
+			if obj in self.MUSIC_ONTOLOGIES:
+				print "Found music onto!"
+				return True
+		return False
 
 	def artistLocationURI(self):
 		""" Returns the artist's location URI as a string
-
 		"""
 		try:
 			return str(self.locationURI)
@@ -47,8 +63,7 @@ class DBPediaScanner:
 
 	def artistLocationLabel(self):
 		""" Returns the artists location label in English as
-		a string
-
+			a string
 		"""
 		try:
 			self.locationGraph.parse(self.locationURI)
@@ -71,8 +86,7 @@ class DBPediaScanner:
 
 	def artistLocationGeo(self):
 		""" Returns artists hometown latitude and longitude as
-		floats.
-
+			floats.
 		"""
 		try:
 			lat = float(self.locationGraph.objects(self.locationURI, self.latPredicate).next())
@@ -86,6 +100,8 @@ class DBPediaScanner:
 			print "LocationURI not defined!"
 
 	def __checkDisambiguates(self):
+		""" Checks disambiguation page for band, singer etc 
+		"""
 		for stmt in self.artistGraph.objects(rdflib.URIRef(self.artistURI), self.DBONTO.wikiPageDisambiguates):
 			disamb = str(stmt)
 			if '(band)' in disamb:
@@ -105,7 +121,19 @@ class DBPediaScanner:
 				print "Disambiguated to :", disamb
 				break
 
+	def __changeToDisambiguation(self):
+		""" Changes the artistGraph and artistURI to the disambiguation
+			page
+		"""
+		for subject in self.artistGraph.subjects(self.DBONTO.wikiPageDisambiguates, self.artistURI):
+			subjectURI = str(subject)
+			if(subjectURI == self.artistURI + "_(disambiguation)"): 
+				self.__updateGraph(subjectURI)
+				print "Changed to disambiguation page!"
+
 	def __updateGraph(self, newURI):
+		""" Change artistGraph and artistURI to a new artist
+		"""
 		self.artistURI = newURI
 		self.artistGraph.parse(newURI)
 
