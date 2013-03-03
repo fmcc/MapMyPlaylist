@@ -46,9 +46,7 @@ class DBPediaScanner:
 			e.g, try "Prince"
 		"""
 		for obj in self.artistGraph.objects(self.artistURI, self.typePredicate):
-			print "Checking types..."
 			if obj in self.MUSIC_ONTOLOGIES:
-				print "Found music onto!"
 				return True
 		return False
 
