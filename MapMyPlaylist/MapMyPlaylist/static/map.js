@@ -1,20 +1,20 @@
 (function() 
 {
-	function setMarker(lat, long, label)
-	//function setMarker(lat, long, label, image, summary)
+	//function setMarker(lat, long, label)
+	function setMarker(lat, long, label, image, summary)
 	{
 		console.log("Label should be " + label);
 		//custom marker
 		//haven't tested this yet! seemed like LastFM's server was down for a while!		
-		// var musicIcon = L.icon({
-        	//	iconUrl:'static/musicicon.png',
-        	//	iconSize: [40,40]
-    		//});
-		var location = new L.LatLng(lat, long);
-		var marker = new L.Marker(location, { title: label });
-		//var marker = new L.Marker(location, { title: label }, {icon: musicIcon});
-		//this adds a html popup with an image and a summary 
-		//marker.bindPopup("<table><tr><td><img image height=100% width=100%></td><td>summary</td></tr></table>");
+		var musicIcon = L.icon(
+		{
+        	iconUrl:'static/musicicon.png',
+        	iconSize: [40,40]
+    	});
+   
+    	var location = new L.LatLng(lat, long);
+    	//this adds a html popup with an image and a summary 
+  		var marker = L.marker(location, {title: label, icon: musicIcon}).bindPopup("<table><tr><td><img src=" + image + " height=100% width=100%></td><td>" + summary + "</td></tr></table>");
 		map.addLayer(marker);
 	}
 	
@@ -75,9 +75,8 @@
 		            		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude }
 		            		if(longitude < minLatLng[1]) { minLatLng[1] = longitude }
 		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude }
-		            		var image = this.image;
-		            		setMarker(latitude, longitude, this.name)
-					//setMarker(latitude, longitude, this.name, this.image, this.summary)
+		            		//setMarker(latitude, longitude, this.name)
+							setMarker(latitude, longitude, this.name, this.img_url, this.bio)
 		          		});
 		          		$('#artists').html(artists);
 		          		latestArtist = data[0].name;
