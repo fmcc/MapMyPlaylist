@@ -5,6 +5,10 @@ from django.shortcuts import render_to_response
 def mainpage(request):
     return render_to_response('mainpage.html')
 
+def settings(request):
+    return render_to_response('settings.html')
+
+
 def register(request):
     context = RequestContext(request)
     registered = False
