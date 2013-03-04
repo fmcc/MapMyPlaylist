@@ -11,15 +11,15 @@
     <div id="header" class="navbar">
             <div class="navbar-inner">
                 <h1 id="name" class="brand">MayMyPlaylist</h1>
-                <h1 id="login" class="right">logout</h1>
-                <h1 id="settings" class="right">settings</h1>
                 <h1 id="text" class="left">Search artist:<h1>
     <form action="demo_form.asp"> 
                       <input type="text" value ="grammo106" name="artist" size="4" class="mapplaylist">
                       <!--<input type="submit" value="Map!" class="subbutton">-->
-                </form> 
+                </form>
+		<input type="button" id="startButton" class="btn" value="Map!">		
+		<input type="button" id="login" class="btn" style="float:right" value="Login">		
+		<input type="button" id="settings" class="btn" style="float:right" value="Settings" onClick="location.href='templates/settings.html'">
             </div>
-      <button id="startButton">Start AJAXing</button>
             <div id="artists"></div>  
     </div>
       

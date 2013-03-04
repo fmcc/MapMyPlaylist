@@ -3608,7 +3608,9 @@ input[type="submit"].btn.btn-mini {
   text-decoration: none;
 }
 
-
+.btn-right {
+  float: right;
+}
 
 .btn-group {
   position: relative;
