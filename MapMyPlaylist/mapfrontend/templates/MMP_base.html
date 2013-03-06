@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <head>
+        <title>{% block title %} Map My Playlist {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/MMP_main.css" />
+        {% block head %} {% endblock %}
+    </head>
+    
+    <body>
+        <div id="topbar">
+            <header>
+            <h1>MayMyPlaylist</h1>
+            </header>
+            <nav>
+                <h4 id="text" class="left">Search artist:<h4>
+                <input type="text" value ="grammo106" name="artist" size="4" class="mapplaylist">
+                <!--<input type="submit" value="Map!" class="subbutton">-->
+                <input type="button" id="startButton" class="btn" value="Map!">	
+            </nav>
+        </div>
+
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+          
+        <script type="text/javascript" src="static/js/jquery.js"></script>
+        {% block scripts %} {% endblock %}
+    </body>
+</html>

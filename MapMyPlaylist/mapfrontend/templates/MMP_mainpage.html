@@ -1,0 +1,17 @@
+{% extends "MMP_base.html"  %}
+
+    {% block head %}
+        <link rel="stylesheet" type="text/css" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css" /><![endif]-->
+    {% endblock %}
+
+    {% block content %}
+        <div id="map"></div>
+    {% endblock %}
+
+    {% block scripts %}
+        <!--<script type="text/javascript" src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
+        <script type="text/javascript" src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>-->
+        <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
+        <script type="text/javascript" src="static/js/map.js"></script>
+    {% endblock %}
