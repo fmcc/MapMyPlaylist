@@ -3,7 +3,7 @@ from mapfrontend.models import UserProfile, UserForm, UserProfileForm
 from django.shortcuts import render_to_response
 
 def mainpage(request):
-    return render_to_response('mainpage.html')
+    return render_to_response('MMP_mainpage.html')
 
 def settings(request):
     return render_to_response('settings.html')
