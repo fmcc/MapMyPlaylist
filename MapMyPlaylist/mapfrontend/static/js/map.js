@@ -8,7 +8,7 @@
 		//haven't tested this yet! seemed like LastFM's server was down for a while!		
 		var musicIcon = L.icon(
 		{
-        	iconUrl:'static/musicicon.png',
+        	iconUrl:'static/img/musicicon.png',
         	iconSize: [40,40]
     	});
    
