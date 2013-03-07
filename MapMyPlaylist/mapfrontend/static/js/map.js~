@@ -26,7 +26,7 @@
 	var watercolour = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
 	
 	var map = new L.Map('map', {
-		layers: [toner, watercolour]	
+		layers: [toner, watercolor]	
 	});
 
 	var baseLayers = {
