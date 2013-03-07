@@ -1,0 +1,17 @@
+$("#settingsbutton").toggle(function() {
+                $("#settings").animate({"display": "block"}, "slow");
+                $("#map").animate({"right": "300px"}, "slow");
+                $("#topbar").animate({"right": "300px"}, "slow");
+            }, function() {
+                $("#settings").animate({"display": "none"}, "slow");
+                $("#map").animate({"right": "0"}, "slow");
+                $("#topbar").animate({"right": "0"}, "slow");
+            });
+
+                $("#map").animate({"right": "300px"}, "slow");
+                $("#topbar").animate({"right": "300px"}, "slow");
+            },                 $("#map").animate({"right": "0"}, "slow");
+                $("#topbar").animate({"right": "0"}, "slow");
+            });
+            });
+
