@@ -10,6 +10,7 @@ class DBPediaScanner:
     """
     DBONTO = rdflib.Namespace('http://dbpedia.org/ontology/') # Ontology rdflib Namespace
     ONTOLOGIES = (DBONTO.hometown, DBONTO.birthPlace) # Ontologies constant to check for location info
+    MUSIC_ONTOLOGIES = [DBONTO.Band, DBONTO.Artist, DBONTO.MusicGroup, DBONTO.MusicalArtist]
 
     labelPredicate = rdflib.term.URIRef(u'http://www.w3.org/2000/01/rdf-schema#label')
     latPredicate = rdflib.URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#lat")
