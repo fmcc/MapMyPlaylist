@@ -22,16 +22,23 @@
 	//var basemap  = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
 	//map.addLayer(basemap);
 
-	var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");	
 	var watercolour = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
+	var osm =  new L.TileLayer("http://a.tile.openstreetmap.org/{z}/{x}/{y}.png");
+	var mapQuest = new L.TileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {subdomains: ['1','2','3','4']});
+					
+	var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
+	
 	
 	var map = new L.Map('map', {
-		layers: [toner, watercolour]	
+		minZoom: 2,
+		layers: [watercolour, osm, mapQuest, toner]	
 	});
 
 	var baseLayers = {
-		"Toner": toner,
-		"Watercolour": watercolour
+		"Watercolour": watercolour,
+		"OSM": osm,
+		"MapQuest": mapQuest,
+		"Toner": toner
 	};
 
 	L.control.layers(baseLayers).addTo(map);
