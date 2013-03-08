@@ -8,7 +8,7 @@
 		{
         	iconUrl:'static/img/pink_pin.png',
         	iconSize: [40,40]
-    	});
+    		});
    
     	var location = new L.LatLng(lat, long);
     	//this adds a html popup with an image and a summary 
@@ -43,8 +43,15 @@
 	var userMarker = {};
 	function onLocationFound(e) 
 	{
+		//custom user marker		
+		var userIcon = L.icon(
+		{
+        	iconUrl:'static/img/green_pin.png',
+        	iconSize: [40,40]
+		});		
+						
 		var radius = e.accuracy / 2;
-		userMarker = L.marker(e.latlng).addTo(map)
+		userMarker = L.marker(e.latlng, {icon: userIcon}).addTo(map)	
 		.bindPopup("You are within " + radius + "meters from this point").openPopup();
 		L.circle(e.latlng, radius).addTo(map);
 	}
@@ -115,7 +122,6 @@
   		});
 	});  
 })();
-
 
  
 /*//lat, lon and zoom of the map
