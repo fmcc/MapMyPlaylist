@@ -35,6 +35,11 @@ nav {
     background: red ;
 }
 
+#searchbutton {
+    position: absolute ; 
+    right : 130px ; 
+}
+
 #topbar {
     background: grey ;
     position: absolute ;

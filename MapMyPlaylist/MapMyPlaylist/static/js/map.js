@@ -1,11 +1,9 @@
 (function() 
 {
-	//function setMarker(lat, long, label)
 	function setMarker(lat, long, label, image, summary)
 	{
 		console.log("Label should be " + label);
-		//custom marker
-		//haven't tested this yet! seemed like LastFM's server was down for a while!		
+		//custom marker		
 		var musicIcon = L.icon(
 		{
         	iconUrl:'static/img/musicicon.png',
@@ -19,9 +17,24 @@
 	}
 	
 	//add map as baselayer	
-	var map = new L.Map('map');
-	var basemap  = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-	map.addLayer(basemap);
+	//var map = new L.Map('map', {minZoom: 2});
+	//var basemap  = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
+	//var basemap  = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
+	//map.addLayer(basemap);
+
+	var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");	
+	var watercolour = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
+	
+	var map = new L.Map('map', {
+		layers: [toner, watercolour]	
+	});
+
+	var baseLayers = {
+		"Toner": toner,
+		"Watercolour": watercolour
+	};
+
+	L.control.layers(baseLayers).addTo(map);
 
 	var userMarker = {};
 
