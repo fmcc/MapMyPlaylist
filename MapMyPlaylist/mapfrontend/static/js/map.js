@@ -57,9 +57,9 @@
 
 	$( document ).ready(function() 
 	{
-		$('#startButton').click(function()
+		$('#searchbutton').click(function()
 		{
-    		var username = $('input').val();
+    		var username = $('#searchbox').val();
 			var latestArtist = "";
 
 			function getPlaylist()

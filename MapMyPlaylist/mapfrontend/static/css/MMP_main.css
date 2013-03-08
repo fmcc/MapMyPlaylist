@@ -35,9 +35,31 @@ nav {
     background: red ;
 }
 
+#searchexpander {
+    position: absolute ; 
+    right : 128px ; 
+    top : 0 ;
+    width : 150px
+    border: 2px black solid ; 
+    padding: 0.25em ; 
+    margin: 0 1px 0 0 ;
+}
+
+#searchbox, input#searchbox:focus {
+    position: absolute ;
+    top : 0 ;
+    right : 66px ;  
+    border: 2px black solid ; 
+    padding: 0.25em ;
+    font-size: 1em ; 
+    margin: 2px ;
+    outline: none;
+}
+
 #searchbutton {
     position: absolute ; 
-    right : 130px ; 
+    right : 0 ; 
+    top : 0 ;
 }
 
 #topbar {
@@ -54,7 +76,6 @@ nav {
     top:  0;
     bottom: 0;
     right: 0 ;
-    background: red ; 
     width: 0;
     height: 100% ; 
 }
@@ -64,7 +85,6 @@ nav {
     top:  0;
     bottom: 0;
     right: 0 ;
-    background: red ; 
     width: 0;
     height: 100% ; 
 }
