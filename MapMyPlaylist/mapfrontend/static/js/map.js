@@ -7,7 +7,8 @@
 		var musicIcon = L.icon(
 		{
         	iconUrl:'static/img/pink_pin.png',
-        	iconSize: [40,40]
+        	iconSize: [50,50],
+		iconAnchor: [15,49]
     		});
    
     	var location = new L.LatLng(lat, long);
@@ -46,13 +47,13 @@
 		//custom user marker		
 		var userIcon = L.icon(
 		{
-        	iconUrl:'static/img/green_pin.png',
-        	iconSize: [40,40]
+        	iconUrl:'static/img/pin_green.png',
+        	iconSize: [50,50],
+		iconAnchor: [15,49]
 		});		
 						
 		var radius = e.accuracy / 2;
 		userMarker = L.marker(e.latlng, {icon: userIcon}).addTo(map)	
-		.bindPopup("You are within " + radius + "meters from this point").openPopup();
 		L.circle(e.latlng, radius).addTo(map);
 	}
 

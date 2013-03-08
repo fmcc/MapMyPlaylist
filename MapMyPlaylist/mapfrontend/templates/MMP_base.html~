@@ -38,7 +38,7 @@
 
             $("#settingsbutton").click(function() {
 		if (loginvis == true){
-		    $("#login").animate({"width": "0"}, "slow");
+		    $("#settings").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     loginvis = false;
