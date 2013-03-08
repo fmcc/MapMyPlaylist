@@ -6,7 +6,7 @@
 		//custom marker		
 		var musicIcon = L.icon(
 		{
-        	iconUrl:'static/img/musicicon.png',
+        	iconUrl:'static/img/pink_pin.png',
         	iconSize: [40,40]
     	});
    
@@ -19,15 +19,12 @@
 	//add map as baselayer	
 	//var map = new L.Map('map', {minZoom: 2});
 	//var basemap  = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-	//var basemap  = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
 	//map.addLayer(basemap);
 
 	var watercolour = new L.TileLayer("http://tile.stamen.com/watercolor/{z}/{x}/{y}.png");
 	var osm =  new L.TileLayer("http://a.tile.openstreetmap.org/{z}/{x}/{y}.png");
-	var mapQuest = new L.TileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {subdomains: ['1','2','3','4']});
-					
+	var mapQuest = new L.TileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {subdomains: ['1','2','3','4']});				
 	var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-	
 	
 	var map = new L.Map('map', {
 		minZoom: 2,
@@ -44,14 +41,11 @@
 	L.control.layers(baseLayers).addTo(map);
 
 	var userMarker = {};
-
 	function onLocationFound(e) 
 	{
 		var radius = e.accuracy / 2;
-
 		userMarker = L.marker(e.latlng).addTo(map)
 		.bindPopup("You are within " + radius + "meters from this point").openPopup();
-
 		L.circle(e.latlng, radius).addTo(map);
 	}
 
@@ -95,8 +89,8 @@
 		            		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude }
 		            		if(longitude < minLatLng[1]) { minLatLng[1] = longitude }
 		            		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude }
-		            		//setMarker(latitude, longitude, this.name)
-							setMarker(latitude, longitude, this.name, this.img_url, this.bio)
+					//sets a marker for this artist					
+					setMarker(latitude, longitude, this.name, this.img_url, this.bio)
 		          		});
 		          		$('#artists').html(artists);
 		          		latestArtist = data[0].name;
@@ -120,10 +114,21 @@
     		var playlistRefresh = setInterval(getPlaylist, 5000);
   		});
 	});  
-    
+})();
+
+
+ 
+/*//lat, lon and zoom of the map
+		var lat            = 53.52;
+		var lon            = -1.00;
+		var zoom           = 7;
+
+//add new marker (R.marker = a Raphael marker)
+	var adelaide = new L.LatLng(lat, lon);
+	map.addLayer(new R.Marker(adelaide));
+
     //Raphael and Leaflet working together....
-    //useless really...
-	/*map.on('click', function(e) {
+	map.on('click', function(e) {
 		var b = new R.BezierAnim([adelaide, e.latlng], {}, function() {
 			var p = new R.Pulse(
 					e.latlng, 
@@ -137,10 +142,8 @@
 			}, 3000);
 		});
 		map.addLayer(b);
-     
-	});
-    */
-})();
+	}); */
+
 
 
 /*var node = Raphael(0,0,500,500);
