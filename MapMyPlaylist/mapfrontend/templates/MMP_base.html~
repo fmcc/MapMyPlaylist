@@ -15,11 +15,6 @@
             </header>
             
             <nav>
-                <div id="searchexpander">
-                    <input id="searchbox" type="text" name="searchbox"><br>
-                    <img id="searchbutton" class="button" src="static/img/MMP_search_icon.png" height="52px">
-                </div>
-
                 <p id="settingsbutton" class="button">Settings</p>
                 <p id="loginbutton" class="button">Login/Register</p>
             </nav>
@@ -40,40 +35,28 @@
         <script>
             var settingsvis = false;
             var loginvis = false;
-            var siderbarpresent = false;
 
             $("#settingsbutton").click(function() {
-<<<<<<< HEAD
-                if(!settingsvis){
-=======
 		if (loginvis == true){
-		    $("#login").animate({"width": "0"}, "slow");
+		    $("#settings").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     loginvis = false;
 		}
 		if(settingsvis == false){
->>>>>>> 709bd34763816d21577679c09d53f06d764c097f
                     $("#settings").animate({"width": "300px"}, "slow");;
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     settingsvis = true;
-                    siderbarpresent = true;
-                }else if(settingsvis){
+                }else if(settingsvis == true){
                     $("#settings").animate({"width": "0"}, "slow");
-                    $("#login").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     settingsvis = false;
-                    loginvis = false;
-                    siderbarpresent = false;
                 }
             });
 
             $("#loginbutton").click(function() {
-<<<<<<< HEAD
-                if(!loginvis){
-=======
 		if (settingsvis == true){
 		    $("#settings").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
@@ -81,20 +64,15 @@
                     settingsvis = false;
 		}
                 if(loginvis == false){
->>>>>>> 709bd34763816d21577679c09d53f06d764c097f
                     $("#login").animate({"width": "300px"}, "slow");
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     loginvis = true;
-                    siderbarpresent = true;
-                }else if(loginvis){
-                    $("#settings").animate({"width": "0"}, "slow");
+                }else if(loginvis == true){
                     $("#login").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     loginvis = false;
-                    settingsvis = false;
-                    siderbarpresent = false;
                 }
                 });
 
