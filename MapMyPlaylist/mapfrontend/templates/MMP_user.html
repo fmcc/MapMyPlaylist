@@ -11,9 +11,10 @@
     {% block scripts %}
     <script>
 (function($){
-    $.fn.plotArtists = function(){
+    $.fn.plotArtists = function(test){
         $.each(this, function(){ 
-            console.log(this.name) 
+            console.log(this.name);
+            console.log(test);
         })
     };
 })(jQuery);
@@ -21,7 +22,8 @@
 
         $( document ).ready(function() {
             $.getJSON('/finduserplaylist/wildfreenoise/', function(data){
-                $(data).plotArtists()});
+                var hello = "This is a test"
+                $(data).plotArtists(hello)});
         });
     </script>
     {% endblock %}

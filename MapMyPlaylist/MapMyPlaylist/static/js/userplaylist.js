@@ -1,14 +1,3 @@
-function createMap(){
-    var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
-    var map = new L.Map('map', { minZoom: 2, layers: [toner]});
-    var baseLayers = {"Toner": toner};
-    L.control.layers(baseLayers).addTo(map);
-}
-
-function addUser(){
-
-}
-
 function plotArtists(artists, map, minLatLng, maxLatLng){
     $.each(artists, function(){ 
         var latitude = parseFloat(this.lat);
