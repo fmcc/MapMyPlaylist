@@ -11,7 +11,7 @@ class UserProfile(models.Model):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ["username", "email", "password"]
+        fields = ["username", "password"]
 
 class UserProfileForm(ModelForm):
     class Meta:

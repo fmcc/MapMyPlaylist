@@ -6,7 +6,7 @@
 		//custom marker		
 		var musicIcon = L.icon(
 		{
-        	iconUrl:'static/img/pink_pin.png',
+        	iconUrl:'static/img/pin_pink.png',
         	iconSize: [50,50],
 		iconAnchor: [15,49]
     		});
@@ -123,68 +123,3 @@
   		});
 	});  
 })();
-
- 
-/*//lat, lon and zoom of the map
-		var lat            = 53.52;
-		var lon            = -1.00;
-		var zoom           = 7;
-
-//add new marker (R.marker = a Raphael marker)
-	var adelaide = new L.LatLng(lat, lon);
-	map.addLayer(new R.Marker(adelaide));
-
-    //Raphael and Leaflet working together....
-	map.on('click', function(e) {
-		var b = new R.BezierAnim([adelaide, e.latlng], {}, function() {
-			var p = new R.Pulse(
-					e.latlng, 
-					6,
-					{'stroke': '#ffff00', 'fill': '#30a3ec'}, 
-					{'stroke': '#30a3ec', 'stroke-width': 3});
-
-			map.addLayer(p);
-			setTimeout(function() {
-				map.removeLayer(b).removeLayer(p);
-			}, 3000);
-		});
-		map.addLayer(b);
-	}); */
-
-
-
-/*var node = Raphael(0,0,500,500);
-node.circle(150,150,5);
-
-function arcs(cenx, ceny, radius, linewidth, pos) {
-    openW = 300;
-    openH = 100;
-    bigR = radius + linewidth;
-    arc = [
-        ["M",cenx, ceny - radius],
-        ["a",radius,radius,0,0,1,radius,radius],
-        ["l",linewidth,0],
-        ["a",bigR,bigR,0,0,0,-bigR,-bigR],
-        ["l",0,linewidth]
-        ];
-    openedArc = [
-        ["M",cenx, ceny - radius],
-        ["a",radius,radius,0,0,1,radius,radius],
-        ["l",openW,0],
-        ["l",0,-openH],
-        ["l",-openW-radius,0],
-        ["l",0,openH-radius]
-        ];
-    node.path(arc).attr({"fill": "#f00"}).transform([["r",pos,150,150]])
-    .click(function(){
-        this.animate({path: openedArc}, 500, "<");
-    }).dblclick(function(){
-        this.animate({path: arc}, 500, "<");
-    });;
-}
-
-arcs(150,150,20,20,0);
-arcs(150,150,20,20,90);
-arcs(150,150,20,20,180);
-arcs(150,150,20,20,270);
-*/

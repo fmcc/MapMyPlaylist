@@ -1,14 +1,22 @@
 from django.contrib.auth.models import User
 from mapfrontend.models import UserProfile, UserForm, UserProfileForm
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponse
+from django.template import RequestContext, loader
+from django.contrib.auth.forms import AuthenticationForm
+from registration.forms import RegistrationForm
 
 def mainpage(request):
     return render_to_response('MMP_mainpage.html')
 
-def settings(request):
-    return render_to_response('MMP_settings.html')
+def userpage(request, username):
+    try:
+        user = UserProfile.objects.get(user = User.objects.get(username = username))
+    except User.DoesNotExist:
+        print "unknownuser"
+    return render_to_response('MMP_user.html', {'user': user })
 
-
+"""
 def register(request):
     context = RequestContext(request)
     registered = False
@@ -28,6 +36,24 @@ def register(request):
             print uform.errors, pform.errors
     else:
         uform = UserForm()
-        apform = UserProfileForm()
+        pform = UserProfileForm()
 
-    return render_to_response('rango/register.html', {'uform': uform, 'pform': pform, 'registered': registered }, context)
+    return render_to_response('register.html', {'uform': uform, 'pform': pform, 'registered': registered }, context)
+"""
+def register(request):
+    form = UserForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            if request.is_ajax: 
+                user = authenticate(username = request.POST['username'],password = request.POST['password'])
+                if user is not None:
+                    redirect_to = '/home/%s/'%user
+                else:
+                    print "User unknown"
+        else:
+            print "Wrong username/password"
+
+    obj = {
+        'userprofile': UserForm(),
+    }
+    return render(request, 'register.html', obj)

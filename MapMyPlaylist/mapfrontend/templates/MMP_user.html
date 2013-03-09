@@ -1,0 +1,29 @@
+{% extends "MMP_base.html"  %}
+
+    {% block content %}
+    <div id="map">
+        {{ user.lastfmusername }}
+        {{ user.user.username }}
+    </div>
+    {% endblock %}
+
+    
+    {% block scripts %}
+    <script>
+(function($){
+    $.fn.plotArtists = function(){
+        $.each(this, function(){ 
+            console.log(this.name) 
+        })
+    };
+})(jQuery);
+
+
+        $( document ).ready(function() {
+            $.getJSON('/finduserplaylist/wildfreenoise/', function(data){
+                $(data).plotArtists()});
+        });
+    </script>
+    {% endblock %}
+
+

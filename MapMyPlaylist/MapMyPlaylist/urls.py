@@ -14,7 +14,8 @@ urlpatterns = patterns('',
 
     url(r'^$', 'mapfrontend.views.mainpage'),
     url(r'^register/$', 'mapfrontend.views.register'),
-    url(r'^settings/$', 'mapfrontend.views.settings'),
+    url(r'^user/(?P<username>\w+)/$', 'mapfrontend.views.userpage'),
+
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
