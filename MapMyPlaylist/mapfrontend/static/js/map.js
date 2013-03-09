@@ -11,8 +11,7 @@
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.locate({setView: true, maxZoom: 7});
-
-
+    
     $( document ).ready(function(){
         $('#searchbutton').click(function(){
             var bandname = $('#searchbox').val();
