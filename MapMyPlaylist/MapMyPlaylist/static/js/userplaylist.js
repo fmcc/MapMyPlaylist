@@ -1,3 +1,30 @@
+function createMap(){
+    var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
+    var map = new L.Map('map', { minZoom: 2, layers: [toner]});
+    var baseLayers = {"Toner": toner};
+    L.control.layers(baseLayers).addTo(map);
+    return map;
+}
+
+function addUser(map){
+    var lat ;
+    var lon ;
+    function onLocationFound(e){
+        var userIcon = L.icon({iconUrl:'static/img/pin_green.png',iconSize: [50,50],iconAnchor: [15,49]});		
+	var radius = e.accuracy / 2;
+	var userMarker = L.marker(e.latlng, {icon: userIcon}).addTo(map)
+        lat = userMarker.getLatLng().lat;
+        lon = userMarker.getLatLng().lng;
+	L.circle(e.latlng, radius).addTo(map);
+    }
+    function onLocationError(e) {alert(e.message)}
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+    map.locate({setView: true, maxZoom: 7});
+    
+    return [lat, lon]
+}
+
 function plotArtists(artists, map, minLatLng, maxLatLng){
     $.each(artists, function(){ 
         var latitude = parseFloat(this.lat);

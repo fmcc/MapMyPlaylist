@@ -3,10 +3,7 @@ function createMap(){
     var map = new L.Map('map', { minZoom: 2, layers: [toner]});
     var baseLayers = {"Toner": toner};
     L.control.layers(baseLayers).addTo(map);
-}
-
-function addUser(){
-
+    return map;
 }
 
 function plotArtists(artists, map, minLatLng, maxLatLng){
