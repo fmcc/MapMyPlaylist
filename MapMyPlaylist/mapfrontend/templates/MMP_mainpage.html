@@ -34,13 +34,15 @@
                 var bandname = $('#searchbox').val();
                 function getPlaylist(){
                     $.getJSON('/findartist/' + bandname + '/', function(data){
-                        var userLat = userMarker.getLatLng().lat;
-                        var userLong = userMarker.getLatLng().lng;
-                        var minLatLng = [userLat, userLong];
-                        var maxLatLng = [userLat, userLong];
-                        plotArtists(data, map, minLatLng, maxLatLng)});
+			if(!isNaN(latitude)){
+            			var userLat = userMarker.getLatLng().lat;
+                        	var userLong = userMarker.getLatLng().lng;
+                        	var minLatLng = [userLat, userLong];
+                        	var maxLatLng = [userLat, userLong];
+                        	plotArtists(data, map, minLatLng, maxLatLng)}
+        		});
                 }
-                var playlistRefresh = setInterval(getPlaylist, 5000);
+		getPlaylist()
 	        })
   	});
     })();
