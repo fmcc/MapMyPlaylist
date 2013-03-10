@@ -14,6 +14,7 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
             console.log(this.name + " map failed!");
 	    return true;
         }
+	//else {
 	if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
 	if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
 	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
