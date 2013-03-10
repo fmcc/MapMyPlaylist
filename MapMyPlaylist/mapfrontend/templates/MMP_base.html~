@@ -1,9 +1,12 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8">
     <head>
         <title>{% block title %} Map My Playlist {% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/MMP_main.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/MMP_main.css" />
         <link href='http://fonts.googleapis.com/css?family=Raleway:400' rel='stylesheet' type='text/css'>
         {% block head %} {% endblock %}
     </head>
@@ -15,64 +18,66 @@
             </header>
             
             <nav>
+                <div id="searchexpander">
+                    <input id="searchbox" type="text" name="searchbox"><br>
+                    <img id="searchbutton" class="button" src="{{ STATIC_PREFIX }}img/MMP_search_icon.png" height="52px">
+                </div>
+
                 <p id="settingsbutton" class="button">Settings</p>
-                <p id="loginbutton" class="button">Login/Register</p>
+                <p id="loginbutton" class="button">Login</p>
             </nav>
         </div>
 
             {% block content %}{% endblock %}
 
         <div id="settings">
-            Test
+            Test 
         </div>
           
         <div id="login">
                 This is a test
         </div>
         
-        <script type="text/javascript" src="static/js/jquery.js"></script>
+        <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
         {% block scripts %} {% endblock %}
         <script>
             var settingsvis = false;
             var loginvis = false;
+            var siderbarpresent = false;
 
             $("#settingsbutton").click(function() {
-		if (loginvis == true){
-		    $("#settings").animate({"width": "0"}, "slow");
-                    $("#map").animate({"right": "0"}, "slow");
-                    $("#topbar").animate({"right": "0"}, "slow");
-                    loginvis = false;
-		}
-		if(settingsvis == false){
+                if(!settingsvis){
                     $("#settings").animate({"width": "300px"}, "slow");;
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     settingsvis = true;
-                }else if(settingsvis == true){
+                    siderbarpresent = true;
+                }else if(settingsvis){
                     $("#settings").animate({"width": "0"}, "slow");
+                    $("#login").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     settingsvis = false;
+                    loginvis = false;
+                    siderbarpresent = false;
                 }
             });
 
             $("#loginbutton").click(function() {
-		if (settingsvis == true){
-		    $("#settings").animate({"width": "0"}, "slow");
-                    $("#map").animate({"right": "0"}, "slow");
-                    $("#topbar").animate({"right": "0"}, "slow");
-                    settingsvis = false;
-		}
-                if(loginvis == false){
+                if(!loginvis){
                     $("#login").animate({"width": "300px"}, "slow");
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     loginvis = true;
-                }else if(loginvis == true){
+                    siderbarpresent = true;
+                }else if(loginvis){
+                    $("#settings").animate({"width": "0"}, "slow");
                     $("#login").animate({"width": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     loginvis = false;
+                    settingsvis = false;
+                    siderbarpresent = false;
                 }
                 });
 

@@ -31,8 +31,35 @@
             {% block content %}{% endblock %}
 
         <div id="settings">
-            Test 
-        </div>
+		<h1>Settings</h1>
+               
+        	<hr>
+            
+        	<div class="lastfmsettings">
+            	<h4>Change link lastFM account</h4>
+            	<label>Link LastFM account:</label>
+            	<input type="text" name="playlist" class="mapplaylist"><br>
+            	<button onclick="">Update changes</button>
+        	</div>
+            
+        	<hr>
+           
+		<div class="passwordsettings">
+           	<h4>Change password</h2>
+            	<label>Old password:</label>
+            	<input type="password" name="password"><br>
+            	
+                <label>New password:</label>
+                <input type="password" name="newpassword"><br>
+                    
+                <label>Confirm password:</label>
+                <input type="password" name="confirmpassword"><br>
+            
+            	<button onclick="">Update changes</button>
+		</div>	
+        
+        </div>    
+        <hr>
           
         <div id="login">
                 This is a test
