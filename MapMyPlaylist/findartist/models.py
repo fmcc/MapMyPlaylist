@@ -13,7 +13,7 @@ class Artist(models.Model):
     image  = models.CharField(max_length=200)
     origin = models.ForeignKey('Location', related_name='artist', to_field='placename')
     def __unicode__(self):
-        return str(self.name)
+        return self.name
 
 
 class Location(models.Model):
@@ -22,4 +22,4 @@ class Location(models.Model):
     latitude = models.CharField(max_length=200)
     longitude = models.CharField(max_length=200)
     def __unicode__(self):
-        return str(self.placename)
+        return self.placename
