@@ -1,5 +1,6 @@
 import rdflib
 import re
+from urllib import quote_plus
 from guess_language import *
 
 class DBPediaScanner:
@@ -24,7 +25,8 @@ class DBPediaScanner:
         name as a string.
 
         """
-        self.artistURI = rdflib.URIRef("http://dbpedia.org/resource/" + re.sub('\s+', '_', artist))
+
+        self.artistURI = rdflib.URIRef(quote_plus('http://dbpedia.org/resource/' + re.sub('\s+', '_', artist), safe='/:'))
         print "Artist URI is:", self.artistURI
         self.artistGraph = rdflib.Graph()
         self.artistGraph.parse(self.artistURI)
@@ -74,7 +76,7 @@ class DBPediaScanner:
 
         """
         try:
-            return str(self.locationURI)
+            return quote_plus(self.locationURI, safe='/:')
         except AttributeError: # If locationURI hasn't been defined
             print "LocationURI not defined!"
             return None
