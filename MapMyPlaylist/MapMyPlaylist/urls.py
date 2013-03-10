@@ -21,4 +21,5 @@ urlpatterns = patterns('',
 
     url(r'^findartist/(?P<artistName>.+)/$', 'findartist.views.artistQuery'),
     url(r'^finduserplaylist/(?P<lastFMUsername>.+)/$', 'findartist.views.playlistQuery'),
+    url(r'^suggestentry/', 'findartist.views.suggestEntry', name='suggestentry'),
 )

@@ -29,7 +29,7 @@ def playlistQuery(request, lastFMUsername):
         a = artistGetOrCreate(art)
         playlist.append({'name': a.name,'bio': a.bio,'img_url': a.image,'origin': a.origin.placename,'lat': a.origin.latitude,'long': a.origin.longitude})
     json_playlist = dumps(playlist)
-    return HttpResponse(json_playlist, content_type="application/json") 
+    return HttpResponse(json_playlist, content_type="application/json")
 
 """
 Method to either retrieve an artist from the database, or use the CreateArtist Class to query last.fm and dbpedia and add the artist to our DB.
@@ -41,3 +41,20 @@ def artistGetOrCreate(artistName):
         CreateArtist(artistName)
         artist = Artist.objects.get(name=artistName)
     return artist
+
+def suggestEntry(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        artists = Artist.objects.filter(name__startswith=q).order_by("name")
+        results = []
+        for art in artists:
+            artist_json = {}
+            artist_json['id'] = art.name
+            artist_json['label'] = art.name
+            artist_json['value'] = art.name
+            results.append(artist_json)
+        data = dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)

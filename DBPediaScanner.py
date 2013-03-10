@@ -39,6 +39,7 @@ class DBPediaScanner:
 			except (StopIteration): # If none of this type found.
 				print "No ontology of type", ontology, "found!"
 		print "No locational info!"
+		raise NoLocationError(self.artistURI)
 
 	def __isArtistType(self):
 		""" Returns whether the artistGraph is for an
@@ -134,6 +135,12 @@ class DBPediaScanner:
 		"""
 		self.artistURI = newURI
 		self.artistGraph.parse(newURI)
+
+class NoLocationError(Exception):
+    def __init__(self, artistURI):
+        self.artistURI = artistURI
+    def __str__(self):
+        return repr(self.artistURI)
 
 
 
