@@ -1,8 +1,7 @@
 import pylast
-from findartist.utils.CreateArtist import CreateArtist
 from findartist.utils.generic import MMPLFMACC
 
-class LastFMPlaylist:
+class LastFMInterface:
 
     def __init__(self, lastFMUsername):
         network = MMPLFMACC()
