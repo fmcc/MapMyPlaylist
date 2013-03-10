@@ -1,3 +1,20 @@
+function testButton (form){
+	for (Count = 0; Count < 2; Count++) {
+        	if (form.display[Count].checked)
+        	break;
+    	}
+	//if "map recently listened"
+    	if (Count == 0){
+		alert ("Button map recently listened is selected");
+		//MapRecentlyListened();
+	}
+	//if "map top artists"
+	if (Count == 1){
+		alert ("Button map top arists is selected");		
+		//TODO
+	}
+}
+
 function createMap(){
     var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
     var map = new L.Map('map', { minZoom: 2, layers: [toner]});
@@ -14,7 +31,6 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
             console.log(this.name + " map failed!");
 	    return true;
         }
-	//else {
 	if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
 	if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
 	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };

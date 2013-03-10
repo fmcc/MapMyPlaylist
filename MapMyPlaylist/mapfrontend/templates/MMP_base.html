@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/MMP_main.css" />
         <link href='http://fonts.googleapis.com/css?family=Raleway:400' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         {% block head %} {% endblock %}
     </head>
     
@@ -63,11 +64,11 @@
 
 		<div class="displaysettings">
 		<h4>What would you like to map?</h4>
-		<form action="">
-		<input type="radio" name="display" value="current">Artist currently listening to<br>
-		<input type="radio" name="display" value="top">My top artists
-		</form>
-        
+		<FORM NAME="displayform">
+		<INPUT TYPE="radio" NAME="display" Value="displayRecent" onClick=0>Map recently listened<BR>
+		<INPUT TYPE="radio" NAME="display" Value="displayTop" onClick=0>Map top artists<BR>
+		<INPUT TYPE="button" NAME="button" Value="Update changes" onClick="testButton(this.form)"> <BR>
+		</FORM>
         </div>    
        
           
@@ -77,6 +78,7 @@
         
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
         <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js" type="text/javascript"></script>
+	
         {% block scripts %} {% endblock %}
         <script>
             var settingsvis = false;

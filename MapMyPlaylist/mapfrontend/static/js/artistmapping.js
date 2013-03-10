@@ -1,3 +1,20 @@
+function testButton (form){
+	for (Count = 0; Count < 2; Count++) {
+        	if (form.display[Count].checked)
+        	break;
+    	}
+	//if "map recently listened"
+    	if (Count == 0){
+		alert ("Map recently listened is selected");
+		//MapRecentlyListened();
+	}
+	//if "map top artists"
+	if (Count == 1){
+		alert ("Map top arists is selected");		
+		//TODO
+	}
+}
+
 function createMap(){
     var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
     var map = new L.Map('map', { minZoom: 2, layers: [toner]});
