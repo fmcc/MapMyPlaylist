@@ -25,7 +25,7 @@ class DBPediaScanner:
         name as a string.
 
         """
-
+        artist = artist.encode('utf-8')
         self.artistURI = rdflib.URIRef(quote_plus('http://dbpedia.org/resource/' + re.sub('\s+', '_', artist), safe='/:'))
         print "Artist URI is:", self.artistURI
         self.artistGraph = rdflib.Graph()
@@ -95,12 +95,12 @@ class DBPediaScanner:
             hometown = self.locationGraph.preferredLabel(self.locationURI, lang=u'en')[0][1]
             print "English label found!"
             print "Hometown is", hometown
-            return str(hometown)
+            return hometown
         except IndexError: # If no labels in English are found
             print "No English label found!"
             try:
                 hometown = self.locationGraph.objects(self.locationURI, self.labelPredicate).next()
-                return str(hometown)
+                return hometown
             except StopIteration: # If generator is empty
                 print "Empty locationGraph!" 
 
@@ -124,7 +124,7 @@ class DBPediaScanner:
         """ Checks disambiguation page for band, singer etc 
         """
         for stmt in self.artistGraph.objects(rdflib.URIRef(self.artistURI), self.DBONTO.wikiPageDisambiguates):
-            disamb = str(stmt)
+            disamb = stmt
             if '(band)' in disamb:
                 self.__updateGraph(stmt)
                 print "Disambiguated to :", disamb
@@ -147,7 +147,7 @@ class DBPediaScanner:
             page
         """
         for subject in self.artistGraph.subjects(self.DBONTO.wikiPageDisambiguates, self.artistURI):
-            subjectURI = str(subject)
+            subjectURI = subject
             if(subjectURI == self.artistURI + "_(disambiguation)"): 
                 self.__updateGraph(subjectURI)
                 print "Changed to disambiguation page!"
