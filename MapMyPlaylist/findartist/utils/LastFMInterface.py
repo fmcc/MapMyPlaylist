@@ -18,4 +18,12 @@ class LastFMInterface:
                 artists.append(art)
         return artists
 
+    def getTopArtists(self):
+        artists = []
+        playlist = self.LastFMUser.get_top_artists()
+        for p in playlist:
+            art = p[0].get_name()
+            if art not in artists:
+                artists.append(art)
+        return artists
 

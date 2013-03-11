@@ -25,6 +25,12 @@ def playlistQuery(request, lastFMUsername):
     artists = user.getPlaylist()
     return HttpResponse(packageArtists(artists), content_type="application/json")
 
+def topArtistQuery(request, lastFMUsername):
+    user = LastFMInterface(lastFMUsername)
+    artists = user.getTopArtists()
+    return HttpResponse(packageArtists(artists), content_type="application/json")
+
+
 def suggestEntry(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
