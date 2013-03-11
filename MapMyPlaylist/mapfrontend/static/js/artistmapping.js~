@@ -5,12 +5,12 @@ function testButton (form){
     	}
 	//if "map recently listened"
     	if (Count == 0){
-		alert ("Button map recently listened is selected");
+		alert ("Map recently listened is selected");
 		//MapRecentlyListened();
 	}
 	//if "map top artists"
 	if (Count == 1){
-		alert ("Button map top arists is selected");		
+		alert ("Map top arists is selected");		
 		//TODO
 	}
 }
