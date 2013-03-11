@@ -6,12 +6,21 @@ function testButton (form){
 	//if "map recently listened"
     	if (Count == 0){
 		alert ("Map recently listened is selected");
-		//MapRecentlyListened();
+		//TODO
+		//needs data
+		//needs map
+		//needs minLatLng
+		//needs maxLatLng
+		
 	}
 	//if "map top artists"
 	if (Count == 1){
 		alert ("Map top arists is selected");		
 		//TODO
+		//needs data
+		//needs map
+		//needs minLatLng
+		//needs maxLatLng
 	}
 }
 
@@ -28,6 +37,7 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
         var latitude = parseFloat(this.lat);
 	var longitude = parseFloat(this.long);
         if(isNaN(latitude)){
+	    alert ("Map My Playlist doesn't know where " + this.name + " is from");
             console.log(this.name + " map failed!");
 	    return true;
         }
@@ -38,12 +48,14 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
         artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
         setMarker(artist, map);
         })
-    	map.fitBounds([minLatLng,maxLatLng]);
 };
 
 function setMarker(artist, map){
+    //#FFAE4A
+    //#3FD98B
+    //#EF4581
     var location = new L.LatLng(artist.lat, artist.long);
-    var marker = R.marker(location).bindPopup("<table><tr><td><img src=" + artist.image + " height=100% width=100%></td><td>" + artist.summary + "</td></tr></table>");
-    map.addLayer(marker);
+    var test = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor:'#FFAE4A', fillOpacity:'0.8'}).bindPopup(artist.label);
+    map.addLayer(test);
 };
 
