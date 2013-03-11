@@ -55,8 +55,11 @@ def locationQuery(request, locName):
     try:
         loc = Location.objects.get(placename=locName)
     except Location.DoesNotExist:
-        CreateLocation(locName)
-        loc = Location.objects.get(placename=locName)
+        try:
+            CreateLocation(locName)
+            loc = Location.objects.get(placename=locName)
+        except Location.DoesNotExist:
+            return HttpResponse("Location not found!")
     location = []
     location.append({'uri': loc.dbpediaURI, 'name': loc.placename, 'lat': loc.latitude, 'long': loc.longitude})
     json_location = dumps(location)

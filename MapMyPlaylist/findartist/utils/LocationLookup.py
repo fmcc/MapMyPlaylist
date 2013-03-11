@@ -12,30 +12,30 @@ class LocationLookup:
 
 
     def __init__(self, locationName):
-        self.locationName = locationName.encode('utf-8')
-        self.locationURI = rdflib.URIRef(quote_plus('http://dbpedia.org/resource/' + re.sub('\s+', '_', locationName), safe='/:'))
-        self.locationGraph = rdflib.Graph().parse(self.locationURI)
+        self.locName = locationName.encode('utf-8')
+        self.locURI = rdflib.URIRef(quote_plus('http://dbpedia.org/resource/' + re.sub('\s+', '_', locationName), safe='/:'))
+        self.locGraph = rdflib.Graph().parse(self.locURI)
 
-    def getLocationURI(self):
-        return quote_plus(self.locationURI, safe='/:')
+    def locationURI(self):
+        return quote_plus(self.locURI, safe='/:')
 
     def locationLabel(self):
         try:
-            locationLabel = self.locationGraph.preferredLabel(self.locationURI, lang=u'en')[0][1]
+            locationLabel = self.locGraph.preferredLabel(self.locURI, lang=u'en')[0][1]
             print "English label found!"
             return locationLabel
         except IndexError: # If no labels in English are found
             print "No English label found!"
             try:
-                hometown = self.locationGraph.objects(self.locationURI, self.labelPredicate).next()
+                hometown = self.locGraph.objects(self.locURI, self.labelPredicate).next()
                 return hometown
             except StopIteration: # If generator is empty
                 print "Empty locationGraph!"
 
     def locationGeo(self):
         try:
-            lat = float(self.locationGraph.objects(self.locationURI, self.latPredicate).next())
-            lon = float(self.locationGraph.objects(self.locationURI, self.longPredicate).next())
+            lat = float(self.locGraph.objects(self.locURI, self.latPredicate).next())
+            lon = float(self.locGraph.objects(self.locURI, self.longPredicate).next())
             print "Latitude is", lat
             print "Longitude is", lon
             return lat, lon

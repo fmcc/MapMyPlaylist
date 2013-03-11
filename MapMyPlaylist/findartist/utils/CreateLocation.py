@@ -7,11 +7,11 @@ class CreateLocation:
 	def __init__(self, locationName):
 		newLocation = Location()
 		scanDBP = LocationLookup(locationName)
-		locURI = scanDBP.getLocationURI()
+		locURI = scanDBP.locationURI()
 		locName = scanDBP.locationLabel()
 		locGeo = scanDBP.locationGeo()
 
-		if locURI != None:
+		if locName != None:
 			newLocation.dbpediaURI = locURI
 			newLocation.placename = locName
 			newLocation.latitude = locGeo[0]
