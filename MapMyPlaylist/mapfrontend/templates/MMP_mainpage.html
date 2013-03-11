@@ -16,6 +16,7 @@
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/leaflet.label.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         <script>
+<<<<<<< HEAD
         (function(){
             var map = createMap();
             var userMarker = {};
@@ -48,6 +49,14 @@
   	});
     })();
     </script>
+=======
+	init();        
+	$('#searchbutton').click(function(){
+        	var bandname = $('#searchbox').val();
+		getData("artist",bandname);                
+	});
+    	</script>
+>>>>>>> 2d7ba226179cc4fa837e438e6be536d6a59a29e4
     {% endblock %}
 
 

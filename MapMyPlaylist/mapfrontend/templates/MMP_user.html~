@@ -15,12 +15,14 @@
         <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         <script>
-	init();        
-	$('#searchbutton').click(function(){
-        	var bandname = $('#searchbox').val();
-		getData(bandname);                
-	});
-    	</script>
+	init();
+        $( document ).ready(function(){
+		var username = "grammo106";	
+		getData("playlist",username);
+	});                
+    </script>
     {% endblock %}
+
+
 
 

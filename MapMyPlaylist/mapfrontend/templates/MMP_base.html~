@@ -65,8 +65,8 @@
 		<div class="displaysettings">
 		<h4>What would you like to map?</h4>
 		<FORM NAME="displayform">
-		<INPUT TYPE="radio" NAME="display" Value="rad_button1" onClick=0>Map recently listened<BR>
-		<INPUT TYPE="radio" NAME="display" Value="rad_button2" onClick=0>Map top artists<BR>
+		<INPUT TYPE="radio" NAME="display" Value="displayRecent" onClick=0>Map recently listened<BR>
+		<INPUT TYPE="radio" NAME="display" Value="displayTop" onClick=0>Map top artists<BR>
 		<INPUT TYPE="button" NAME="button" Value="Update changes" onClick="testButton(this.form)"> <BR>
 		</FORM>
         </div>    
