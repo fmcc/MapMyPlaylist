@@ -14,6 +14,7 @@ class CreateArtist:
         
         newArtist.name = LastFMartist.get_name()
         newArtist.image = LastFMartist.get_cover_image()
+        newArtist.musicbrainz = LastFMartist.get_mbid()
         scanDBP = DBPediaScanner(newArtist.name)
         newArtist.bio = scanDBP.artistComment()
         locURI = scanDBP.artistLocationURI()

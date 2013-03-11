@@ -30,6 +30,8 @@ def topArtistQuery(request, lastFMUsername):
     artists = user.getTopArtists()
     return HttpResponse(packageArtists(artists), content_type="application/json")
 
+def findallartists(request):
+    return HttpResponse(allArtists(), content_type="application/json")
 
 def suggestEntry(request):
     if request.is_ajax():

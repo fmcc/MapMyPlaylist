@@ -31,7 +31,7 @@
     
             $( document ).ready(function(){
                 function getPlaylist(){
-                    $.getJSON('/finduserplaylist/' + "{{ user.lastfmusername }}" + '/', function(data){
+                    $.getJSON('/allartists/', function(data){
                         var userLat = userMarker.getLatLng().lat;
                         var userLong = userMarker.getLatLng().lng;
                         var minLatLng = [userLat, userLong];

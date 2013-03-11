@@ -10,6 +10,13 @@ def packageArtists(artists):
         playlist.append({'name': a.name,'bio': a.bio,'img_url': a.image,'origin': a.origin.placename,'lat': a.origin.latitude,'long': a.origin.longitude})
     return dumps(playlist)
 
+def allArtists():
+    artists = Artist.objects.all()
+    allofthem = []
+    for a in artists:
+        allofthem.append({'name': a.name,'bio': a.bio,'img_url': a.image,'origin': a.origin.placename,'lat': a.origin.latitude,'long': a.origin.longitude})
+    return dumps(allofthem)
+
 """
 Method to either retrieve an artist from the database, or use the CreateArtist Class to query last.fm and dbpedia and add the artist to our DB.
 """

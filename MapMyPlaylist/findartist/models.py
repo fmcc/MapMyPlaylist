@@ -5,6 +5,7 @@ import textwrap
 class Artist(models.Model):
     name = models.CharField(max_length=200)
     bio = models.TextField(max_length=200)
+    musicbrainz = models.CharField(max_length=200, blank=True, null=True)
 
     def formatted_bio(self):
         nohtml = re.sub("<.*?>", "", self.bio)
