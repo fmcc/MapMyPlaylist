@@ -15,33 +15,10 @@
         <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         <script>
-        (function(){
-            var map = createMap();
-            var userMarker = {};
-            function onLocationFound(e){
-                var userIcon = L.icon({iconUrl:'{{ STATIC_PREFIX }}/img/pin_green.png',iconSize: [50,50],iconAnchor: [15,49]});
-                var radius = e.accuracy / 2;
-                userMarker = L.marker(e.latlng, {icon: userIcon}).addTo(map)    
-                L.circle(e.latlng, radius).addTo(map);
-            }
-            function onLocationError(e) {alert(e.message)}
-            map.on('locationfound', onLocationFound);
-            map.on('locationerror', onLocationError);
-            map.locate({setView: true, maxZoom: 7});
-    
-            $( document ).ready(function(){
-                function getPlaylist(){
-                    $.getJSON('/allartists/', function(data){
-                        var userLat = userMarker.getLatLng().lat;
-                        var userLong = userMarker.getLatLng().lng;
-                        var minLatLng = [userLat, userLong];
-                        var maxLatLng = [userLat, userLong];
-                        plotArtists(data, map, minLatLng, maxLatLng)});
-                }
-                getPlaylist();
-                var playlistRefresh = setInterval(getPlaylist, 5000);
-	        })
-    })();
+	init();
+        $( document ).ready(function(){	
+		getData("playlist",{{user.lastfmusername}});
+	});                
     </script>
     {% endblock %}
 
