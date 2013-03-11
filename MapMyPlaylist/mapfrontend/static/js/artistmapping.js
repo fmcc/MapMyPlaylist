@@ -41,15 +41,16 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
             console.log(this.name + " map failed!");
 	    return true;
         }
-	else if(!isNaN(latitude)){
+	//else if(!isNaN(latitude)){
 		if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
 		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
 		if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
 		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
         	artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
         	setMarker(artist, map);
-	}
-    })    	
+	//}
+    })
+	map.fitBounds([minLatLng,maxLatLng]);    	
 };
 
 function setMarker(artist, map){

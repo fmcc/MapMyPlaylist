@@ -40,7 +40,7 @@
                         	var maxLatLng = [userLat, userLong];
                         	plotArtists(data, map, minLatLng, maxLatLng)
         		});
-                }
+               // }
 		getPlaylist()
 	        })
   	});
