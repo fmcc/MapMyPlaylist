@@ -24,4 +24,5 @@ urlpatterns = patterns('',
     url(r'^findtopartists/(?P<lastFMUsername>.+)/$', 'findartist.views.topArtistQuery'),
     url(r'^allartists/$', 'findartist.views.findallartists'),
     url(r'^suggestentry/', 'findartist.views.suggestEntry', name='suggestentry'),
+    url(r'^findlocation/(?P<locName>.+)/$', 'findartist.views.locationQuery'),
 )

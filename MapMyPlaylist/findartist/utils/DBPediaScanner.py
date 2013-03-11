@@ -70,7 +70,6 @@ class DBPediaScanner:
                 return True
         return False
 
-
     def artistLocationURI(self):
         """ Returns the artist's location URI as a string
 

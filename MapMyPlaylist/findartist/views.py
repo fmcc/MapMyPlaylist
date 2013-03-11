@@ -1,6 +1,7 @@
 from findartist.models import Artist, Location
 from findartist.utils.LastFMInterface import LastFMInterface
 from findartist.utils.artistgen import *
+from findartist.utils.CreateLocation import CreateLocation
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import  HttpResponse 
 
@@ -49,3 +50,14 @@ def suggestEntry(request):
         data = 'fail'
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+def locationQuery(request, locName):
+    try:
+        loc = Location.objects.get(placename=locName)
+    except Location.DoesNotExist:
+        CreateLocation(locName)
+        loc = Location.objects.get(placename=locName)
+    location = []
+    location.append({'uri': loc.dbpediaURI, 'name': loc.placename, 'lat': loc.latitude, 'long': loc.longitude})
+    json_location = dumps(location)
+    return HttpResponse(json_location, content_type="application/json")
