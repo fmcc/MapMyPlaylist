@@ -38,13 +38,11 @@ function plotArtists(artists, map, minLatLng, maxLatLng){
         artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
         setMarker(artist, map);
         })
-    	map.fitBounds([minLatLng,maxLatLng]);
 };
 
 function setMarker(artist, map){
-    var musicIcon = L.icon({iconUrl:'static/img/pin_pink.png',iconSize: [50,50],iconAnchor: [15,49]});
     var location = new L.LatLng(artist.lat, artist.long);
-    var marker = L.marker(location, {title: artist.label, icon: musicIcon}).bindPopup("<table><tr><td><img src=" + artist.image + " height=100% width=100%></td><td>" + artist.summary + "</td></tr></table>");
-    map.addLayer(marker);
+    var test = new R.Marker(location, {'class': artist.label, 'fill': '#3FD989'});
+    map.addLayer(test);
 };
 

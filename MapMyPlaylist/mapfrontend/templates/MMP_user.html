@@ -10,9 +10,9 @@
     {% endblock %}
 
     {% block scripts %}
-        <!--<script type="text/javascript" src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
-        <script type="text/javascript" src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script> -->
         <script type="text/javascript" src="https://raw.github.com/CloudMade/Leaflet/master/dist/leaflet-src.js"></script>
+        <script type="text/javascript" src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
+        <script type="text/javascript" src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         <script>
         (function(){
@@ -28,10 +28,10 @@
             map.on('locationfound', onLocationFound);
             map.on('locationerror', onLocationError);
             map.locate({setView: true, maxZoom: 7});
-    
+            
             $( document ).ready(function(){
                 function getPlaylist(){
-                    $.getJSON('/allartists/', function(data){
+                    $.getJSON('/finduserplaylist/{{ user.lastfmusername }}/', function(data){
                         var userLat = userMarker.getLatLng().lat;
                         var userLong = userMarker.getLatLng().lng;
                         var minLatLng = [userLat, userLong];
