@@ -84,8 +84,7 @@ function plotArtists(artists, map){
         var latitude = parseFloat(this.lat);
 	var longitude = parseFloat(this.long);
         if(isNaN(latitude)){
-	    alert ("Map My Playlist doesn't know where " + this.name + " is from");
-            console.log(this.name + " map failed!");
+	    enterLocation(this);
 	    return true;
         }
 <<<<<<< HEAD

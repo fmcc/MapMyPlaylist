@@ -1,6 +1,7 @@
 from findartist.models import Artist, Location
 from findartist.utils.LastFMInterface import LastFMInterface
 from findartist.utils.artistgen import *
+from findartist.utils.CreateLocation import CreateLocation
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import  HttpResponse 
 
@@ -33,7 +34,7 @@ def topArtistQuery(request, lastFMUsername):
 def findallartists(request):
     return HttpResponse(allArtists(), content_type="application/json")
 
-def suggestEntry(request):
+def suggestArtists(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
         artists = Artist.objects.filter(name__startswith=q).order_by("name")
@@ -49,3 +50,34 @@ def suggestEntry(request):
         data = 'fail'
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+def suggestLocations(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        locations = Location.objects.filter(placename__startswith=q).order_by("placename")
+        results = []
+        for loc in locations:
+            location_json = {}
+            location_json['id'] = loc.placename
+            location_json['label'] = loc.placename
+            location_json['value'] = loc.placename
+            results.append(location_json)
+        data = dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+def locationQuery(request, locName):
+    try:
+        loc = Location.objects.get(placename=locName)
+    except Location.DoesNotExist:
+        try:
+            CreateLocation(locName)
+            loc = Location.objects.get(placename=locName)
+        except Location.DoesNotExist:
+            return HttpResponse("Location not found!")
+    location = []
+    location.append({'uri': loc.dbpediaURI, 'name': loc.placename, 'lat': loc.latitude, 'long': loc.longitude})
+    json_location = dumps(location)
+    return HttpResponse(json_location, content_type="application/json")

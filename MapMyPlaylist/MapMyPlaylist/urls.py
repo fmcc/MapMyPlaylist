@@ -23,5 +23,7 @@ urlpatterns = patterns('',
     url(r'^finduserplaylist/(?P<lastFMUsername>.+)/$', 'findartist.views.playlistQuery'),
     url(r'^findtopartists/(?P<lastFMUsername>.+)/$', 'findartist.views.topArtistQuery'),
     url(r'^allartists/$', 'findartist.views.findallartists'),
-    url(r'^suggestentry/', 'findartist.views.suggestEntry', name='suggestentry'),
+    url(r'^suggestartists/', 'findartist.views.suggestArtists', name='suggestartists'),
+    url(r'^suggestlocations/', 'findartist.views.suggestLocations', name='suggestlocations'),
+    url(r'^findlocation/(?P<locName>.+)/$', 'findartist.views.locationQuery'),
 )
