@@ -1,3 +1,12 @@
+//global variables
+var map = "";			//map
+var userMarker = {};		//marker for the user
+var minLatLng = [];		//minimum latitude and longitude
+var maxLatLng = [];		//maximum latitude and longitude
+var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
+var latestArtist = "";		//variable to keep track of the latest artist
+var hold = false;		//hold is true if mapping shouldn't be refreshed
+
 function artistMapping (form){
 	for (Count = 0; Count < 2; Count++) {
         	if (form.display[Count].checked)
@@ -6,22 +15,16 @@ function artistMapping (form){
 	//if "map recently listened"
     	if (Count == 0){
 		alert ("Map recently listened is selected");
-		//TODO
 		var username = "grammo106";	
-		getData("playlist",username);    
+		getData("playlist",username); 
+		//TODO  
 	}
 	//if "map top artists"
 	if (Count == 1){
-		alert ("Map top arists is selected");		
+		alert ("Map top artists is selected");			
 		//TODO
 	}
 }
-//global variables
-var map = "";			//map
-var userMarker = {};		//marker for the user
-var minLatLng = [];		//minimum latitude and longitude
-var maxLatLng = [];		//maximum latitude and longitude
-var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
 
 //initialises the page
 function init(){
@@ -52,18 +55,25 @@ function createMap(){
 
 //gets the artist data where name is either bandname or playlistname 
 function getData(find,name){
+	var playlistRefresh;
 	if(find == "artist"){
 		$.getJSON('/findartist/' + name + '/', function(data){
-			console.log("reached artist getData");
 			setMinMaxLatLng();                	
-			plotArtists(data, map)
+			plotArtists(data, map);
+			//clears the interval: no refreshing
+			clearInterval(playlistRefresh);
 		})
 	}
 	if(find == "playlist"){
 		$.getJSON('/finduserplaylist/' + name + '/', function(data){
-			console.log("reached playlist getData");
 			setMinMaxLatLng();			
-                	plotArtists(data, map)
+                	plotArtists(data, map);
+			//refreshes the getData function if it is not on hold
+			playlistRefresh = setInterval(function(){
+							if(hold) {
+								return;
+							}
+					getData("playlist",name)}, 5000); 
         	})
 	}
 }
@@ -85,22 +95,30 @@ function plotArtists(artists, map){
 	var longitude = parseFloat(this.long);
         if(isNaN(latitude)){
 	    enterLocation(this);
+	    hold = true;
 	    return true;
         }
 	else{
-	    if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
-	    if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
-	    if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
-	    if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
-            artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
-            setMarker(artist, map);
+	    // checks to see if most recent artist has changed
+	    if (artists[0].name != latestArtist){
+	    	if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
+	    	if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
+	    	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
+	    	if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
+            	artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
+            	setMarker(artist, map);
+	    }
 	}
     })
+    hold = false;
+    latestArtist = artists[0].name;
     //if at least one marker has been added, adjust the bounds of the map
     if(mappingSuccessful){
 	map.fitBounds([minLatLng,maxLatLng]); 
     }   	
 };
+
+
 
 //sets a marker for a location of an artist
 function setMarker(artist, map){
