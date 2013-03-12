@@ -1,6 +1,12 @@
 
 function enterLocation(artist) { 
-	$( "#locationentry" ).dialog({ autoOpen: false, title: "Enter Location", width: 350, modal: true })
+	$( "#locationentry" ).dialog( { 
+		autoOpen: false, 
+		title: "Enter Location for " + artist.name, 
+		width: 350,
+		height: 350, 
+		modal: true 
+	})
 	.dialog("open");
 	$('#locationbutton').click(function(){
 		var location = $('#locationbox').val();
