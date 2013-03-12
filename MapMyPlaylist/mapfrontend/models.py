@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     lastfmusername = models.CharField(max_length=200)
+    currentlocation = models.ForeignKey('UserLocation', blank=True, null=True)
+    friends = models.ManyToManyField('UserProfile', blank=True, null=True)
     def __unicode__(self):
         return self.user.username
 
@@ -18,4 +20,9 @@ class UserProfileForm(ModelForm):
         model = UserProfile
         fields = ['lastfmusername']
 
+class UserLocation(models.Model):
+    latitude = models.CharField(max_length=200)
+    longitude = models.CharField(max_length=200)
+    def __unicode__(self):
+        return "Lat: " + self.latitude + "Lng: " + self.longitude 
 
