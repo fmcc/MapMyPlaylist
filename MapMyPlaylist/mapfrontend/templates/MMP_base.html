@@ -75,7 +75,7 @@
         <div id="login">
                 This is a test
         </div>
-
+sul
         <div id="locationentry">
             <div id="searchexpander2">
                 <input id="locationbox" type="text" name="searchbox">
@@ -85,6 +85,7 @@
         
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
         <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="{{ STATIC_PREFIX }}js/enterlocation.js"></script>
 	
         {% block scripts %} {% endblock %}
         <script>
@@ -130,7 +131,7 @@
 
             $(function() {
                 $("#searchbox").autocomplete({
-                    source: "/suggestentry/",
+                    source: "/suggestartists/",
                     minLength: 1,
                 });
             });

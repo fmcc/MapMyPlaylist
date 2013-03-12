@@ -34,7 +34,7 @@ def topArtistQuery(request, lastFMUsername):
 def findallartists(request):
     return HttpResponse(allArtists(), content_type="application/json")
 
-def suggestEntry(request):
+def suggestArtists(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
         artists = Artist.objects.filter(name__startswith=q).order_by("name")
@@ -45,6 +45,23 @@ def suggestEntry(request):
             artist_json['label'] = art.name
             artist_json['value'] = art.name
             results.append(artist_json)
+        data = dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+def suggestLocations(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        locations = Location.objects.filter(placename__startswith=q).order_by("placename")
+        results = []
+        for loc in locations:
+            location_json = {}
+            location_json['id'] = loc.placename
+            location_json['label'] = loc.placename
+            location_json['value'] = loc.placename
+            results.append(location_json)
         data = dumps(results)
     else:
         data = 'fail'
