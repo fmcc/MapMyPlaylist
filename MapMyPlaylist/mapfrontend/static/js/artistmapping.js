@@ -21,7 +21,7 @@ var map = "";			//map
 var userMarker = {};		//marker for the user
 var minLatLng = [];		//minimum latitude and longitude
 var maxLatLng = [];		//maximum latitude and longitude
-var mappingSuccessful = "";	//set to successfull if number of markers added is greater than 0
+var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
 
 //initialises the page
 function init(){
@@ -87,31 +87,13 @@ function plotArtists(artists, map){
 	    enterLocation(this);
 	    return true;
         }
-<<<<<<< HEAD
-	if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
-	if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
-	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
-	if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
-        artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
-        setMarker(artist, map);
-        })
-};
-
-function setMarker(artist, map){
-    //#FFAE4A
-    //#3FD98B
-    //#EF4581
-    var location = new L.LatLng(artist.lat, artist.long);
-    var test = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor:'#FFAE4A', fillOpacity:'0.8'}).bindPopup(artist.label + '<img src="' + artist.image + '" height="100px">' + artist.summary);
-    map.addLayer(test);
-=======
 	else{
-		if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
-		if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
-		if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
-		if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
-        	artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
-        	setMarker(artist, map);
+	    if(latitude < minLatLng[0]) { minLatLng[0] = latitude };
+	    if(latitude > maxLatLng[0]) { maxLatLng[0] = latitude };
+	    if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
+	    if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
+            artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
+            setMarker(artist, map);
 	}
     })
     //if at least one marker has been added, adjust the bounds of the map
@@ -121,12 +103,14 @@ function setMarker(artist, map){
 };
 
 //sets a marker for a location of an artist
-function setMarker(artist){
-    var musicIcon = L.icon({iconUrl:'static/img/pin_pink.png',iconSize: [50,50],iconAnchor: [15,49]});
+function setMarker(artist, map){
+    //#FFAE4A
+    //#3FD98B
+    //#EF4581
     var location = new L.LatLng(artist.lat, artist.long);
-    var marker = L.marker(location, {title: artist.label, icon: musicIcon}).bindPopup("<table><tr><td><img src=" + artist.image + " height=100% width=100%></td><td>" + artist.summary + "</td></tr></table>");
+    var marker = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor:'#FFAE4A', fillOpacity:'0.8'}).bindPopup(artist.label + '<img src="' + artist.image + '" height="100px">' + artist.summary);
     map.addLayer(marker);
     mappingSuccessful = true;
->>>>>>> 2d7ba226179cc4fa837e438e6be536d6a59a29e4
 };
+//    var marker = L.marker(location, {title: artist.label, icon: musicIcon}).bindPopup("<table><tr><td><img src=" + artist.image + " height=100% width=100%></td><td>" + artist.summary + "</td></tr></table>");
 
