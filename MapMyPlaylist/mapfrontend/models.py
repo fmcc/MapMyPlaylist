@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
+
     lastfmusername = models.CharField(max_length=200)
     currentlocation = models.ForeignKey('UserLocation', blank=True, null=True)
     friends = models.ManyToManyField('UserProfile', blank=True, null=True)

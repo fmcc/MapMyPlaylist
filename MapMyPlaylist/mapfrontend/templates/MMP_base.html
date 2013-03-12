@@ -33,7 +33,6 @@
         </div>
 
         <div id="map"></div>
-            {% block content %}{% endblock %}
 
         <div id="settings">
 		<h1>Settings</h1>
@@ -71,7 +70,9 @@
 		<INPUT TYPE="radio" NAME="display" Value="displayRecent" onClick=0>Map recently listened<BR>
 		<INPUT TYPE="radio" NAME="display" Value="displayTop" onClick=0>Map top artists<BR>
 		<INPUT TYPE="button" NAME="button" Value="Update changes" onClick="artistMapping(this.form)"> <BR>
-		</FORM>
+            </FORM>
+
+            {% block content %}{% endblock %}
         </div>    
        
           

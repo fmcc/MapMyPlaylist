@@ -4,6 +4,11 @@
     {% endblock %}
 
     {% block content %}
+    {% if user.friends.all|length >= 1 %}
+    {% for f in user.friends.all %}
+    {{ f.lastfmusername }}
+    {% endfor %}
+        {% endif %}
     {% endblock %}
 
     {% block scripts %}
