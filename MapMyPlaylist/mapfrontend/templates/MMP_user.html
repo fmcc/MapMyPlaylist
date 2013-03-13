@@ -5,13 +5,16 @@
 
     {% block content %}
     <div id="MMP_user_plotting_settings">
+
+        <span id="Current_user">{{user.lastfmusername }}</span>
         <h5>Personal data to map:</h5>
-        <input type="checkbox" class="MMP_plotting_checkbox"  id="MMP_recent" value="{{ user.lastfmusername }}" onClick=0 checked> Recently Listened.
-        <input type="checkbox" class="MMP_plotting_checkbox" id="MMP_top" value="{{ user.lastfmusername }}" onClick=0> Top 50 Artists.<br/>
+        <input type="checkbox" class="MMP_plotting_checkbox"  id="MMP_recent" data-user_details='{"lfmusername":"{{ user.lastfmusername }}", "latitude":"{{ user.currentlocation.latitude }}", longitude":"{{ user.currentlocation.longitude }}"}'  onClick=0 checked> Recently Listened.
+        <input type="checkbox" class="MMP_plotting_checkbox" id="MMP_top" data-user_details='{"lfmusername":"{{ user.lastfmusername }}", "latitude":"{{ user.currentlocation.latitude }}", longitude":"{{ user.currentlocation.longitude }}"}' onClick=0> Top 50 Artists.<br/>
         {% if user.friends.all|length >= 1 %}
         <h5>Map friends playlists?</h5>
         {% for f in user.friends.all %}
-        <input type="checkbox" class="MMP_plotting_checkbox" id="MMP_recent" value="{{ f.lastfmusername }}" onClick=0> {{ f.user.username }}<br/>
+        <input type="checkbox" class="MMP_plotting_checkbox" id="MMP_recent" data-user_details='{"lfmusername":"{{ f.lastfmusername }}", "latitude":"{{ f.currentlocation.latitude }}", longitude":"{{ f.currentlocation.longitude }}"}' onClick=0> {{ f.user.username }}<br/>
+
         {% endfor %}
         <input type="button" id="MMP_update_plotting_settings" value="Update" onClick=0>
         {% endif %}

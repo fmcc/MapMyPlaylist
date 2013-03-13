@@ -1,6 +1,7 @@
     //global variables
     var map = "";			//map variable
     var userMarker = {};		//marker for the user
+    var currentUserName = "" ;
     var minLatLng = [];		//minimum latitude and longitude
     var maxLatLng = [];		//maximum latitude and longitude
     var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
@@ -8,7 +9,7 @@
     var hold = false;		//hold is true if mapping shouldn't be refreshed
     var tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";		//chosen tile for mapping
     var baseLayers= "";		//base layer to add to map
-    var markerColors = ["#FFAE4A", "#3FD98B", "#EF4581", "#6AA6E2", "#A66AE2", "#E26A6A", "#D52A2A", "#D5D52A", "#90E9BD", "#2AD5D5", "#D52AD5", "#EDA6C9", "#6AE26A"];
+    var markerColours = ["#FFAE4A", "#3FD98B", "#EF4581", "#6AA6E2", "#A66AE2", "#E26A6A", "#D52A2A", "#D5D52A", "#90E9BD", "#2AD5D5", "#D52AD5", "#EDA6C9", "#6AE26A"];
 
 //initialises the page
 function init(){
@@ -33,10 +34,10 @@ function createMap(){
 }
 
 //gets the artist data where name is either bandname or playlistname 
-function getData(username, query_type){
+function getData(user_details, query_type){
     var playlistRefresh;
-    if(query_type == "MMP_recent"){
-        $.getJSON('/finduserplaylist/' + username + '/', function(data){
+    if(query_type == "MMP_recent_current_user"){
+        $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
 	    setMinMaxLatLng();
 	    // checks to see if most recent artist has changed
     	    if (data[0].name != latestArtist){			
@@ -50,6 +51,37 @@ function getData(username, query_type){
 		getData("playlist",name)}, 2000); 
         	})
 	}
+    
+    if(query_type == "MMP_top_current_user"){
+        $.getJSON('/findtopartists/' + user_details.lfmusername + '/', function(data){
+	    setMinMaxLatLng();
+            plotArtists(data, map);
+        })
+    }
+    if(query_type == "MMP_recent"){
+        var friendMarker = new L.CircleMarker([ user_details.latitude , user_details.longitude ], {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
+        $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
+	    setMinMaxLatLng();
+	    // checks to see if most recent artist has changed
+    	    if (data[0].name != latestArtist){			
+                plotArtists(data, map);
+		}
+	    //refreshes the getData function if it is not on hold
+	    playlistRefresh = setInterval(function(){
+	        if(hold) {
+		    return;
+		}
+		getData("playlist",name)}, 2000); 
+        	})
+	}
+    
+    if(query_type == "MMP_top"){
+        $.getJSON('/findtopartists/' + user_details.lfmusername + '/', function(data){
+	    setMinMaxLatLng();
+            plotArtists(data, map);
+        })
+    }
+
 
 }
 
@@ -64,6 +96,7 @@ function setMinMaxLatLng(){
 
 //plots the artist on the map
 function plotArtists(artists, query_type){
+    colour = markerColours[Math.floor(Math.random()*markerColours.length)];
     var mappedArtists = []
     mappingSuccessful = false;
     $.each(artists, function(){ 
@@ -80,7 +113,7 @@ function plotArtists(artists, query_type){
 	    	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
 	    	if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
             	artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
-            	mappedArtists.push(setMarker(artist, map));
+            	mappedArtists.push(setMarker(artist, colour));
 	}
     })
     hold = false;
@@ -93,12 +126,9 @@ function plotArtists(artists, query_type){
 };
 
 //sets a marker for a location of an artist
-function setMarker(artist){
-    //#FFAE4A
-    //#3FD98B
-    //#EF4581
+function setMarker(artist, colour){
     var location = new L.LatLng(artist.lat, artist.long);
-    var marker = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor:'#FFAE4A', fillOpacity:'0.8'}).bindPopup(
+    var marker = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor: colour, fillOpacity:'0.8'}).bindPopup(
             '<img id="artist-popup-image" src="' + 
             artist.image + 
             '" align="right">' + 
@@ -110,14 +140,19 @@ function setMarker(artist){
             '</div>'
             );
     map.addLayer(marker);
+    var polyline = L.polyline([location , userMarker.getLatLng()], {color: colour}).addTo(map)
     mappingSuccessful = true;
-    return marker ; 
+    return marker ;
 };
 
 function MMP_update_plotting(){
     $(".MMP_plotting_checkbox").each(function(){
         if($(this).is(':checked')){
-            getData($(this).val(), $(this).attr("id"))
+            user_details = $(this).data('user_details');
+            user_details.latitude = parseFloat(user_details.latitude);
+            user_details.longitude = parseFloat(user_details.longitude);
+
+            getData(user_details, $(this).attr("id"));
         }
     });
 }
@@ -131,7 +166,6 @@ $( document ).ready(function(){
     $('#MMP_search_button').click(function(){
         var artist_name = $('#MMP_search_box').val();
         var query_type = "MMP_search";
-        console.log(query_type);
         $.getJSON('/findartist/' + artist_name + '/', function(data){
         setMinMaxLatLng();      
         artistSearchResults = artistSearchResults.concat(plotArtists(data, query_type));
