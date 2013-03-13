@@ -1,12 +1,15 @@
 //global variables
-var map = "";			//map
+var map = "";			//map variable
 var userMarker = {};		//marker for the user
 var minLatLng = [];		//minimum latitude and longitude
 var maxLatLng = [];		//maximum latitude and longitude
 var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
 var latestArtist = "";		//variable to keep track of the latest artist
 var hold = false;		//hold is true if mapping shouldn't be refreshed
-
+var tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";		//chosen tile for mapping
+var baseLayers= "";		//base layer to add to map
+	
+//maps what is chosen based on user input
 function artistMapping (form){
 	for (Count = 0; Count < 2; Count++) {
         	if (form.display[Count].checked)
@@ -24,6 +27,37 @@ function artistMapping (form){
 		alert ("Map top artists is selected");			
 		//TODO
 	}
+}
+
+//changes the map appearance based on user input
+function changeTiles(form){
+	for (Count = 0; Count < 4; Count++) {
+        	if (form.display[Count].checked)
+        	break;
+    	}
+	//if "toner"
+    	if (Count == 0){
+		alert ("Toner");
+		tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";
+	}
+	//if "watercolour"
+	if (Count == 1){
+		alert ("Watercolour");	
+		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";		
+	}
+	//if "greyscale"
+    	if (Count == 2){
+		alert ("greyscale");
+		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png"; 
+	}
+	//if "openstreetmap"
+	if (Count == 3){
+		alert ("openstreetmap");			
+		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
+	}
+	map.removeLayer(baseLayers);
+	//BUG!!!//TODO//Can't initialise the map again//Leaflet error	
+	createMap();
 }
 
 //initialises the page
@@ -46,9 +80,9 @@ function init(){
 //creates the map
 function createMap(){
 	//adds the tilelayer toner from Stamen to the map	
-	var toner = new L.TileLayer("http://tile.stamen.com/toner/{z}/{x}/{y}.png");
+	var toner = new L.TileLayer(tiles);
 	map = new L.Map('map', { minZoom: 2, layers: [toner]});
-   	var baseLayers = {"Toner": toner};
+   	baseLayers = {"Toner": toner};
 	L.control.layers(baseLayers).addTo(map);
 	return map;
 }

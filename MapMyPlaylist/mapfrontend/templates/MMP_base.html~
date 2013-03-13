@@ -96,6 +96,26 @@
 		</FORM>
 		</div>
 		
+		<!--
+		<div class="mapappearance">
+            	<h4>Change map appearance</h4> 
+		<form name=mapappearance_form">           	
+		<img class="img" src="{{ STATIC_PREFIX }}img/toner.jpg" height="40" width="40" alt="toner">
+		<input type="radio" name="display" value="toner">Toner
+		<br>            	
+		<img class="img" src="{{ STATIC_PREFIX }}img/watercolour.jpg" height="40" width="40" alt="watercolour">
+		<input type="radio" name="display" value="watercolour">Watercolour
+		<br>		
+		<img class="img" src="{{ STATIC_PREFIX }}img/mapnik_grey.png" height="40" width="40" alt="greyscale">
+            	<input type="radio" name="display" value="greyscale">Greyscale
+		<br>		
+		<img class="img" src="{{ STATIC_PREFIX }}img/mapnik_mapquest.jpg" height="40" width="40" alt="openstreetmap">
+		<input type="radio" name="display" value="openstreetmap">OpenStreetMap
+		<INPUT TYPE="button" NAME="button" Value="Update changes" onClick="changeTiles(mapappearance_form)"> <BR>
+		</form>           	
+      		</div>
+		-->
+		
         </div>    
 		
         </div>    
