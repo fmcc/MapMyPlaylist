@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login
 from registration.forms import RegistrationForm
 
 def mainpage(request):
-    return render_to_response('MMP_mainpage.html')
+    return render_to_response('MMP_base.html')
 
 def userpage(request, username):
     try:

@@ -1,118 +1,56 @@
-//global variables
-var map = "";			//map variable
-var userMarker = {};		//marker for the user
-var minLatLng = [];		//minimum latitude and longitude
-var maxLatLng = [];		//maximum latitude and longitude
-var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
-var latestArtist = "";		//variable to keep track of the latest artist
-var hold = false;		//hold is true if mapping shouldn't be refreshed
-var tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";		//chosen tile for mapping
-var baseLayers= "";		//base layer to add to map
-	
-//maps what is chosen based on user input
-function artistMapping (form){
-	for (Count = 0; Count < 2; Count++) {
-        	if (form.display[Count].checked)
-        	break;
-    	}
-	//if "map recently listened"
-    	if (Count == 0){
-		alert ("Map recently listened is selected");
-		var username = "grammo106";	
-		getData("playlist",username); 
-		//TODO  
-	}
-	//if "map top artists"
-	if (Count == 1){
-		alert ("Map top artists is selected");			
-		//TODO
-	}
-}
-
-//changes the map appearance based on user input
-function changeTiles(form){
-	for (Count = 0; Count < 4; Count++) {
-        	if (form.display[Count].checked)
-        	break;
-    	}
-	//if "toner"
-    	if (Count == 0){
-		alert ("Toner");
-		tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";
-	}
-	//if "watercolour"
-	if (Count == 1){
-		alert ("Watercolour");	
-		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";		
-	}
-	//if "greyscale"
-    	if (Count == 2){
-		alert ("greyscale");
-		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png"; 
-	}
-	//if "openstreetmap"
-	if (Count == 3){
-		alert ("openstreetmap");			
-		tiles = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
-	}
-	map.removeLayer(baseLayers);
-	//BUG!!!//TODO//Can't initialise the map again//Leaflet error	
-	createMap();
-}
+    //global variables
+    var map = "";			//map variable
+    var userMarker = {};		//marker for the user
+    var minLatLng = [];		//minimum latitude and longitude
+    var maxLatLng = [];		//maximum latitude and longitude
+    var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
+    var latestArtist = "";		//variable to keep track of the latest artist
+    var hold = false;		//hold is true if mapping shouldn't be refreshed
+    var tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";		//chosen tile for mapping
+    var baseLayers= "";		//base layer to add to map
+    var markerColors = ["#FFAE4A", "#3FD98B", "#EF4581", "#6AA6E2", "#A66AE2", "#E26A6A", "#D52A2A", "#D5D52A", "#90E9BD", "#2AD5D5", "#D52AD5", "#EDA6C9", "#6AE26A"];
 
 //initialises the page
 function init(){
 	var map = createMap();
 	//plots a marker of the user's location
         function onLocationFound(e){
-        	var userIcon = L.icon({iconUrl:'static/img/pin_green.png',iconSize: [50,50],iconAnchor: [15,49]});
-                var radius = e.accuracy / 2;
-                userMarker = L.marker(e.latlng, {icon: userIcon}).addTo(map)    
-                L.circle(e.latlng, radius).addTo(map);
+                userMarker = new L.CircleMarker(e.latlng, {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
         }
         function onLocationError(e) {alert(e.message)}
         map.on('locationfound', onLocationFound);
         map.on('locationerror', onLocationError);
         map.locate({setView: true, maxZoom: 7});                 
 }
-
-
 //creates the map
 function createMap(){
 	//adds the tilelayer toner from Stamen to the map	
 	var toner = new L.TileLayer(tiles);
-	map = new L.Map('map', { minZoom: 2, layers: [toner]});
+	map = new L.Map('map', { minZoom: 3, maxBounds: ([[-90,180],[90, -180]]), layers: [toner]});
    	baseLayers = {"Toner": toner};
 	L.control.layers(baseLayers).addTo(map);
 	return map;
 }
 
 //gets the artist data where name is either bandname or playlistname 
-function getData(find,name){
-	var playlistRefresh;
-	if(find == "artist"){
-		$.getJSON('/findartist/' + name + '/', function(data){
-			setMinMaxLatLng();                	
-			plotArtists(data, map);
-			//clears the interval: no refreshing
-			clearInterval(playlistRefresh);
-		})
-	}
-	if(find == "playlist"){
-		$.getJSON('/finduserplaylist/' + name + '/', function(data){
-			setMinMaxLatLng();
-			// checks to see if most recent artist has changed
-    			if (data[0].name != latestArtist){			
-                		plotArtists(data, map);
-			}
-			//refreshes the getData function if it is not on hold
-			playlistRefresh = setInterval(function(){
-							if(hold) {
-								return;
-							}
-					getData("playlist",name)}, 5000); 
+function getData(username, query_type){
+    var playlistRefresh;
+    if(query_type == "MMP_recent"){
+        $.getJSON('/finduserplaylist/' + username + '/', function(data){
+	    setMinMaxLatLng();
+	    // checks to see if most recent artist has changed
+    	    if (data[0].name != latestArtist){			
+                plotArtists(data, map);
+		}
+	    //refreshes the getData function if it is not on hold
+	    playlistRefresh = setInterval(function(){
+	        if(hold) {
+		    return;
+		}
+		getData("playlist",name)}, 2000); 
         	})
 	}
+
 }
 
 //sets the minimum and maximum latitude and longitude 
@@ -125,7 +63,8 @@ function setMinMaxLatLng(){
 }
 
 //plots the artist on the map
-function plotArtists(artists, map){
+function plotArtists(artists, query_type){
+    var mappedArtists = []
     mappingSuccessful = false;
     $.each(artists, function(){ 
         var latitude = parseFloat(this.lat);
@@ -141,22 +80,20 @@ function plotArtists(artists, map){
 	    	if(longitude < minLatLng[1]) { minLatLng[1] = longitude };
 	    	if(longitude > maxLatLng[1]) { maxLatLng[1] = longitude };
             	artist={lat:latitude,long:longitude,label:this.name,image:this.img_url,summary:this.bio};
-            	setMarker(artist, map);
-	    //}
+            	mappedArtists.push(setMarker(artist, map));
 	}
     })
     hold = false;
     latestArtist = artists[0].name;
     //if at least one marker has been added, adjust the bounds of the map
     if(mappingSuccessful){
-	map.fitBounds([minLatLng,maxLatLng]); 
-    }   	
+        map.fitBounds([minLatLng,maxLatLng]);
+    }   
+    return mappedArtists ; 
 };
 
-
-
 //sets a marker for a location of an artist
-function setMarker(artist, map){
+function setMarker(artist){
     //#FFAE4A
     //#3FD98B
     //#EF4581
@@ -174,6 +111,47 @@ function setMarker(artist, map){
             );
     map.addLayer(marker);
     mappingSuccessful = true;
+    return marker ; 
 };
-//    var marker = L.marker(location, {title: artist.label, icon: musicIcon}).bindPopup("<table><tr><td><img src=" + artist.image + " height=100% width=100%></td><td>" + artist.summary + "</td></tr></table>");
+
+function MMP_update_plotting(){
+    $(".MMP_plotting_checkbox").each(function(){
+        if($(this).is(':checked')){
+            getData($(this).val(), $(this).attr("id"))
+        }
+    });
+}
+
+$( document ).ready(function(){
+    $("#MMP_search_clear_button").hide(); 
+    init();
+    var artistSearchResults = [] ; 
+    MMP_update_plotting();
+    // Used to search for individual 
+    $('#MMP_search_button').click(function(){
+        var artist_name = $('#MMP_search_box').val();
+        var query_type = "MMP_search";
+        console.log(query_type);
+        $.getJSON('/findartist/' + artist_name + '/', function(data){
+        setMinMaxLatLng();      
+        artistSearchResults = artistSearchResults.concat(plotArtists(data, query_type));
+        })
+    });
+    var needCleared = setInterval( function(){
+        if(artistSearchResults.length >= 1){
+            $("#MMP_search_clear_button").show(); 
+        }else{
+            $("#MMP_search_clear_button").hide(); 
+        }
+    },500);
+
+    $('#MMP_search_clear_button').click(function(){
+        $.each(artistSearchResults, function() {
+            map.removeLayer(artistSearchResults.pop(this));
+    });
+    });
+
+    $("#MMP_search_box").autocomplete({ source: "/suggestartists/", minLength: 1, });
+});
+
 

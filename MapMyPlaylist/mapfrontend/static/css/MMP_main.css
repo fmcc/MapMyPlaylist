@@ -48,7 +48,7 @@ nav {
     margin: 0 1px 0 0 ;
 }
 
-#searchbox, input#searchbox:focus {
+#MMP_search_box, input#MMP_search_box:focus {
     position: absolute ;
     top : 0 ;
     right : 66px ;  
@@ -59,10 +59,15 @@ nav {
     outline: none;
 }
 
-#searchbutton {
+#MMP_search_button {
     position: absolute ; 
     right : 0 ; 
     top : 0 ;
+}
+#MMP_search_clear_button {
+    position: absolute ;
+    top: 32px ;
+    right: 66px ;
 }
 
 #topbar {

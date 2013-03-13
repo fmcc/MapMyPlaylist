@@ -2,11 +2,13 @@
 
 {% block content %}
 
-<div id="login">
-	<form id="loginform" method="POST" action="">
-    	{{ login_form }}
+        <div id="login">
+            <form id="loginform" method="POST" action="">{{csrftoken}}
+            {{ login_form.username }}
+            {{ login_form.password }}
     	<input type="submit" value="login"/>
-	</form>
+    </form>
+
 </div>
 <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
 <script>
