@@ -70,6 +70,16 @@ nav {
     right: 66px ;
 }
 
+#MMP_unknown_artist_prompt {
+    position: absolute ;
+    background: white ; 
+    bottom: 0 ; 
+    right: 0 ;
+    width: 50% ; 
+    height: 50% ; 
+    border: 2px black solid ; 
+}
+
 #topbar {
     background: grey ;
     position: absolute ;
@@ -98,7 +108,7 @@ nav {
 }
 
 
-#map {
+#map, #map_container {
     position: fixed ;
     top: 70px ; 
     bottom: 0 ;

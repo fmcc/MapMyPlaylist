@@ -31,9 +31,13 @@
                 <p id="loginbutton" class="button">Login</p>
             </nav>
         </div>
+        <div id="map_container">
+        <div id="map">
+        </div>
 
-        <div id="map"></div>
-
+        <div id="MMP_unknown_artist_prompt">
+        </div>
+        </div>
         <div id="settings">
 		<h1>Settings</h1>
                
@@ -90,6 +94,7 @@
             $("#settingsbutton").click(function() {
                 if(!settingsvis){
                     $("#settings").animate({"width": "300px"}, "slow");;
+                    $("#map_container").animate({"right": "300px"}, "slow");
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     settingsvis = true;
@@ -97,6 +102,7 @@
                 }else if(settingsvis){
                     $("#settings").animate({"width": "0"}, "slow");
                     $("#login").animate({"width": "0"}, "slow");
+                    $("#map_container").animate({"right": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     settingsvis = false;
@@ -108,6 +114,7 @@
             $("#loginbutton").click(function() {
                 if(!loginvis){
                     $("#login").animate({"width": "300px"}, "slow");
+                    $("#map_container").animate({"right": "300px"}, "slow");
                     $("#map").animate({"right": "300px"}, "slow");
                     $("#topbar").animate({"right": "300px"}, "slow");
                     loginvis = true;
@@ -115,6 +122,7 @@
                 }else if(loginvis){
                     $("#settings").animate({"width": "0"}, "slow");
                     $("#login").animate({"width": "0"}, "slow");
+                    $("#map_container").animate({"right": "0"}, "slow");
                     $("#map").animate({"right": "0"}, "slow");
                     $("#topbar").animate({"right": "0"}, "slow");
                     loginvis = false;

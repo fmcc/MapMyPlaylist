@@ -1,7 +1,7 @@
     //global variables
     var map = "";			//map variable
     var userMarker = {};		//marker for the user
-    var currentUserName = "" ;
+    var currentLFMUserName = "" ;
     var minLatLng = [];		//minimum latitude and longitude
     var maxLatLng = [];		//maximum latitude and longitude
     var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
@@ -36,30 +36,14 @@ function createMap(){
 //gets the artist data where name is either bandname or playlistname 
 function getData(user_details, query_type){
     var playlistRefresh;
-    if(query_type == "MMP_recent_current_user"){
-        $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
-	    setMinMaxLatLng();
-	    // checks to see if most recent artist has changed
-    	    if (data[0].name != latestArtist){			
-                plotArtists(data, map);
-		}
-	    //refreshes the getData function if it is not on hold
-	    playlistRefresh = setInterval(function(){
-	        if(hold) {
-		    return;
-		}
-		getData("playlist",name)}, 2000); 
-        	})
-	}
-    
-    if(query_type == "MMP_top_current_user"){
-        $.getJSON('/findtopartists/' + user_details.lfmusername + '/', function(data){
-	    setMinMaxLatLng();
-            plotArtists(data, map);
-        })
-    }
     if(query_type == "MMP_recent"){
-        var friendMarker = new L.CircleMarker([ user_details.latitude , user_details.longitude ], {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
+        console.log(user_details.lfmusername); 
+        console.log(currentLFMUserName); 
+        if(user_details.lfmusername != currentLFMUserName){
+            console.log("aye");
+            var friendLoc = new L.LatLng(parseFloat(user_details.latitude) , parseFloat(user_details.longitude));
+            var friendMarker = new L.CircleMarker(friendLoc, {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
+        } 
         $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
 	    setMinMaxLatLng();
 	    // checks to see if most recent artist has changed
@@ -81,8 +65,6 @@ function getData(user_details, query_type){
             plotArtists(data, map);
         })
     }
-
-
 }
 
 //sets the minimum and maximum latitude and longitude 
@@ -148,16 +130,18 @@ function setMarker(artist, colour){
 function MMP_update_plotting(){
     $(".MMP_plotting_checkbox").each(function(){
         if($(this).is(':checked')){
-            user_details = $(this).data('user_details');
-            user_details.latitude = parseFloat(user_details.latitude);
-            user_details.longitude = parseFloat(user_details.longitude);
-
-            getData(user_details, $(this).attr("id"));
+            var user_details ={
+                lfmusername: $(this).data('user_lfm'),
+                latitude: $(this).data('user_lat'),
+                longitude: $(this).data('user_lng')
+                };
+         getData(user_details, $(this).attr("id"));
         }
     });
 }
 
 $( document ).ready(function(){
+    currentLFMUserName = $("#MMP_current_user").text();
     $("#MMP_search_clear_button").hide(); 
     init();
     var artistSearchResults = [] ; 
