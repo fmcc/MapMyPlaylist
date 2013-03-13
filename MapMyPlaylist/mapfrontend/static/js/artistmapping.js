@@ -1,15 +1,15 @@
     //global variables
     var map = "";			//map variable
     var userMarker = {};		//marker for the user
+    var userMarkerObject = L.CircleMarker();		//marker for the user
     var currentLFMUserName = "" ;
     var minLatLng = [];		//minimum latitude and longitude
     var maxLatLng = [];		//maximum latitude and longitude
     var mappingSuccessful = "";	//set to successful if number of markers added is greater than 0
     var latestArtist = "";		//variable to keep track of the latest artist
     var hold = false;		//hold is true if mapping shouldn't be refreshed
-    var tiles = "http://tile.stamen.com/toner/{z}/{x}/{y}.png";		//chosen tile for mapping
-    var baseLayers= "";		//base layer to add to map
     var markerColours = ["#FFAE4A", "#3FD98B", "#EF4581", "#6AA6E2", "#A66AE2", "#E26A6A", "#D52A2A", "#D5D52A", "#90E9BD", "#2AD5D5", "#D52AD5", "#EDA6C9", "#6AE26A"];
+    var playlistPlottedArtists = [] ;
 
 //initialises the page
 function init(){
@@ -17,56 +17,13 @@ function init(){
 	//plots a marker of the user's location
         function onLocationFound(e){
                 userMarker = new L.CircleMarker(e.latlng, {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
+                userMarkerObject = userMarker ; 
         }
         function onLocationError(e) {alert(e.message)}
         map.on('locationfound', onLocationFound);
         map.on('locationerror', onLocationError);
         map.locate({setView: true, maxZoom: 7});                 
 }
-//creates the map
-function createMap(){
-	//adds the tilelayer toner from Stamen to the map	
-	var toner = new L.TileLayer(tiles);
-	map = new L.Map('map', { minZoom: 3, maxBounds: ([[-90,180],[90, -180]]), layers: [toner]});
-   	baseLayers = {"Toner": toner};
-	L.control.layers(baseLayers).addTo(map);
-	return map;
-}
-
-//gets the artist data where name is either bandname or playlistname 
-function getData(user_details, query_type){
-    var playlistRefresh;
-    if(query_type == "MMP_recent"){
-        console.log(user_details.lfmusername); 
-        console.log(currentLFMUserName); 
-        if(user_details.lfmusername != currentLFMUserName){
-            console.log("aye");
-            var friendLoc = new L.LatLng(parseFloat(user_details.latitude) , parseFloat(user_details.longitude));
-            var friendMarker = new L.CircleMarker(friendLoc, {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
-        } 
-        $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
-	    setMinMaxLatLng();
-	    // checks to see if most recent artist has changed
-    	    if (data[0].name != latestArtist){			
-                plotArtists(data, map);
-		}
-	    //refreshes the getData function if it is not on hold
-	    playlistRefresh = setInterval(function(){
-	        if(hold) {
-		    return;
-		}
-		getData("playlist",name)}, 2000); 
-        	})
-	}
-    
-    if(query_type == "MMP_top"){
-        $.getJSON('/findtopartists/' + user_details.lfmusername + '/', function(data){
-	    setMinMaxLatLng();
-            plotArtists(data, map);
-        })
-    }
-}
-
 //sets the minimum and maximum latitude and longitude 
 //to the user's location 
 function setMinMaxLatLng(){
@@ -76,8 +33,45 @@ function setMinMaxLatLng(){
         maxLatLng = [userLat, userLong];
 }
 
+//gets the artist data where name is either bandname or playlistname 
+function getData(user_details, query_type){
+    var playlistRefresh;
+    var userMarkerObject = {};
+    if(user_details.lfmusername != currentLFMUserName){
+        if(!isNaN(user_details.latitude)){
+            var friendLoc = new L.LatLng(parseFloat(user_details.latitude) , parseFloat(user_details.longitude));
+            friendMarkerObject = new L.CircleMarker(friendLoc, {radius: '20',color: 'black', opacity: '1', fillColor:'#A66AE2', fillOpacity:'0.8'}).addTo(map);
+            userMarkerObject = friendMarkerObject ; 
+        }else{
+            userMarkerObject = userMarker;
+        }
+    }else{
+            userMarkerObject = userMarker;
+    }
+
+    if(query_type == "MMP_recent"){
+            plotPlaylist(user_details, userMarkerObject);
+	    playlistRefresh = setInterval(function(){
+	    plotPlaylist(user_details)}, 2000);
+    }else if(query_type == "MMP_top"){
+        $.getJSON('/findtopartists/' + user_details.lfmusername + '/', function(data){
+	    setMinMaxLatLng();
+            plotArtists(data);
+        })
+    }
+}
+
+function plotPlaylist(user_details, userObject){
+        $.getJSON('/finduserplaylist/' + user_details.lfmusername + '/', function(data){
+	    setMinMaxLatLng();
+    	    if (data[0].name != latestArtist){			
+                plotArtists(data);
+		}
+            })
+}
+
 //plots the artist on the map
-function plotArtists(artists, query_type){
+function plotArtists(artists){
     colour = markerColours[Math.floor(Math.random()*markerColours.length)];
     var mappedArtists = []
     mappingSuccessful = false;
@@ -85,7 +79,7 @@ function plotArtists(artists, query_type){
         var latitude = parseFloat(this.lat);
 	var longitude = parseFloat(this.long);
         if(isNaN(latitude)){
-	    enterLocation(this);
+	    //enterLocation(this);
 	    hold = true;
 	    return true;
         }
@@ -101,10 +95,8 @@ function plotArtists(artists, query_type){
     hold = false;
     latestArtist = artists[0].name;
     //if at least one marker has been added, adjust the bounds of the map
-    if(mappingSuccessful){
-        map.fitBounds([minLatLng,maxLatLng]);
-    }   
-    return mappedArtists ; 
+ 
+    return mappedArtists; 
 };
 
 //sets a marker for a location of an artist
@@ -122,12 +114,17 @@ function setMarker(artist, colour){
             '</div>'
             );
     map.addLayer(marker);
-    var polyline = L.polyline([location , userMarker.getLatLng()], {color: colour}).addTo(map)
+    playlistPlottedArtists.push(marker) ;
+    var polyline = L.polyline([location , userMarkerObject.getLatLng()], {color: colour}).addTo(map)
+    setTimeout(function() { map.removeLayer(polyline);}, 6000);
     mappingSuccessful = true;
     return marker ;
 };
 
 function MMP_update_plotting(){
+    $.each(playlistPlottedArtists, function(){
+        map.removeLayer(playlistPlottedArtists.pop(this));
+        })
     $(".MMP_plotting_checkbox").each(function(){
         if($(this).is(':checked')){
             var user_details ={

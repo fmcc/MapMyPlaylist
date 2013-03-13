@@ -39,6 +39,7 @@
         </div>
         </div>
         <div id="settings">
+            <div id="setting_container">
 		<h1>Settings</h1>
                
 		
@@ -62,7 +63,8 @@
 		</div>
 		
 		
-            {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
+            </div>
         </div>    
        
           
@@ -83,6 +85,7 @@
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/raphael-min.js"></script>
         <script type="text/javascript" src="https://raw.github.com/dynmeth/RaphaelLayer/master/dist/rlayer.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/leaflet.label.js"></script>
+        <script type="text/javascript" src="{{ STATIC_PREFIX }}js/changetiles.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/artistmapping.js"></script>
         <script type="text/javascript" src="{{ STATIC_PREFIX }}js/enterlocation.js"></script>
         {% block scripts %} {% endblock %}
