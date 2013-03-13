@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
 from mapfrontend.models import UserProfile, UserForm, UserProfileForm
+from django.views.decorators.csrf import csrf_exempt
+from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 from registration.forms import RegistrationForm
 
 def mainpage(request):
-    return render_to_response('MMP_base.html')
+    return render_to_response('MMP_mainpage.html')
 
 def userpage(request, username):
     try:
@@ -38,22 +41,18 @@ def register(request):
         uform = UserForm()
         pform = UserProfileForm()
 
+
     return render_to_response('register.html', {'uform': uform, 'pform': pform, 'registered': registered }, context)
 """
 def register(request):
-    form = UserForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            if request.is_ajax: 
-                user = authenticate(username = request.POST['username'],password = request.POST['password'])
-                if user is not None:
-                    redirect_to = '/home/%s/'%user
-                else:
-                    print "User unknown"
-        else:
-            print "Wrong username/password"
+    login_form = UserForm
+    return render_to_response('register.html', {"login_form" : login_form})
 
-    obj = {
-        'userprofile': UserForm(),
-    }
-    return render(request, 'register.html', obj)
+def ajaxLogin(request):
+    print "Requested"
+    if request.method == 'POST':
+        print len(request.POST)
+    else:
+        "print"
+
+

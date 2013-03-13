@@ -68,7 +68,7 @@ def suggestLocations(request):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
-def locationQuery(request, locName):
+def addOrigin(request, locName):
     try:
         loc = Location.objects.get(placename=locName)
     except Location.DoesNotExist:
@@ -76,8 +76,14 @@ def locationQuery(request, locName):
             CreateLocation(locName)
             loc = Location.objects.get(placename=locName)
         except Location.DoesNotExist:
-            return HttpResponse("Location not found!")
-    location = []
-    location.append({'uri': loc.dbpediaURI, 'name': loc.placename, 'lat': loc.latitude, 'long': loc.longitude})
-    json_location = dumps(location)
-    return HttpResponse(json_location, content_type="application/json")
+            return HttpResponse(status=204)
+    if request.method == 'POST':
+        artist_json = request.POST
+        artist = Location.objects.get(name=artist_json.name)
+        artist.origin = loc
+        artist.save()
+        return HttpResponse("Location added to", artist_json.name)
+
+
+
+

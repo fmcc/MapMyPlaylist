@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'mapfrontend.views.mainpage'),
     url(r'^register/$', 'mapfrontend.views.register'),
+    url(r'^ajaxlogin/$', 'mapfrontend.views.ajaxLogin'),
     url(r'^user/(?P<username>\w+)/$', 'mapfrontend.views.userpage'),
 
     # Uncomment the next line to enable the admin:
@@ -25,5 +26,5 @@ urlpatterns = patterns('',
     url(r'^allartists/$', 'findartist.views.findallartists'),
     url(r'^suggestartists/', 'findartist.views.suggestArtists', name='suggestartists'),
     url(r'^suggestlocations/', 'findartist.views.suggestLocations', name='suggestlocations'),
-    url(r'^findlocation/(?P<locName>.+)/$', 'findartist.views.locationQuery'),
+    url(r'^addorigin/(?P<locName>.+)/$', 'findartist.views.addOrigin'),
 )
