@@ -135,6 +135,7 @@ nav {
 
 #artist-popup-image{
     padding: 2px ;
+    margin: 2px ;
     border: black 2px solid ;
     width: 50% ; 
 }
@@ -154,11 +155,12 @@ nav {
     border-radius: 0;
     padding: 1px;
     text-align: left;
+    clear: both ;
     border: black 2px solid;
 }
 .leaflet-popup-content {
-    margin: 14px 20px;
-    line-height: 1.4;
+    overflow: auto ;
+    line-height: 1.4 ;
 }
 .leaflet-popup-content p {
     margin: 18px 0;

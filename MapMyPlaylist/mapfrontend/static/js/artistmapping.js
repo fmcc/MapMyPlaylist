@@ -162,12 +162,12 @@ function setMarker(artist, map){
     //#EF4581
     var location = new L.LatLng(artist.lat, artist.long);
     var marker = new L.CircleMarker(location, {color: 'black', opacity: '1', fillColor:'#FFAE4A', fillOpacity:'0.8'}).bindPopup(
-            '<div id="artist-popup-title">' +
-            artist.label + 
-            '</div>' +
             '<img id="artist-popup-image" src="' + 
             artist.image + 
             '" align="right">' + 
+            '<div id="artist-popup-title">' +
+            artist.label + 
+            '</div>' +
             '<div id="artist-popup-bio">' +
             artist.summary +
             '</div>'
