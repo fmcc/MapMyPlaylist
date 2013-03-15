@@ -1,5 +1,4 @@
 from django.contrib import admin
-from mapfrontend.models import UserProfile, UserLocation
+from mapfrontend.models import UserProfile
 
 admin.site.register(UserProfile)
-admin.site.register(UserLocation)
