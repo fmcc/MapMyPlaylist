@@ -6,11 +6,6 @@ class Artist(models.Model):
     name = models.CharField(max_length=200)
     bio = models.TextField(max_length=200)
     musicbrainz = models.CharField(max_length=200, blank=True, null=True)
-
-    def formatted_bio(self):
-        nohtml = re.sub("<.*?>", "", self.bio)
-        return textwrap.fill(nohtml, 80)
-    
     image  = models.CharField(max_length=200)
     origin = models.ForeignKey('Location', related_name='artist', to_field='placename')
     def __unicode__(self):
